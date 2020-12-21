@@ -1,0 +1,82 @@
+.block-selector {
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    .block {
+        cursor: default;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        border-radius: 5px;
+        width: 30%;
+        height: 30px;
+        background-color: #eee;
+        position: relative;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+    }
+     
+    .block-selected {
+        cursor: default;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        border-radius: 5px;
+        width: 30%;
+        height: 30px;
+        background-color: #eee;
+        position: relative;
+        border: 1px solid indigo;
+        box-sizing: border-box;
+    }
+    .block-selected::after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        right: 0;
+        border-color: transparent;
+        border-style: solid;
+    }
+    .block-selected::after {
+        border-radius: 0px 4px 0px 4px;
+        border-width: 10px;
+        border-right-color: indigo;
+        border-top-color: indigo;
+    }
+    .close-warp {
+        position: absolute;
+        top: -6px;
+        right: 4px;
+        z-index: 99;
+    }
+    .close{
+        position:relative;
+        width:2px;
+        height:8px;
+        background: #fff;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        display: inline-block;
+       }
+       
+       .close:after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width:2px;
+        height:8px;
+        background: #fff;
+        -webkit-transform: rotate(270deg);
+        -moz-transform: rotate(270deg);
+        -o-transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+        transform: rotate(270deg);
+       }
+}

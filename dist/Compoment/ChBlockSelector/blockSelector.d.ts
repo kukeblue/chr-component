@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import './blockSelector.less';
 declare type BlockItem = {
     id: never;

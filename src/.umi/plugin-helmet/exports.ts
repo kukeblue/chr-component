@@ -1,3 +1,3 @@
 // @ts-nocheck
 // @ts-ignore
-export { Helmet } from '/Users/huanchen/Project/cs/chui/node_modules/react-helmet';
+export { Helmet } from '/Users/huanchen/Project/out/paper-resource-frontend/src/chr-component/node_modules/react-helmet';

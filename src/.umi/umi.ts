@@ -4,8 +4,8 @@ import '@@/core/devScripts';
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
 import { createHistory } from './core/history';
-import { ApplyPluginsType } from '/Users/huanchen/Project/cs/chui/node_modules/@umijs/runtime';
-import { renderClient } from '/Users/huanchen/Project/cs/chui/node_modules/@umijs/renderer-react/dist/index.js';
+import { ApplyPluginsType } from '/Users/huanchen/Project/out/paper-resource-frontend/src/chr-component/node_modules/@umijs/runtime';
+import { renderClient } from '/Users/huanchen/Project/out/paper-resource-frontend/src/chr-component/node_modules/@umijs/renderer-react/dist/index.js';
 import { getRoutes } from './core/routes';
 
 

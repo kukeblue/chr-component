@@ -7,8 +7,10 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var React = require('react');
 var React__default = _interopDefault(React);
 var antd = require('antd');
+var axios = _interopDefault(require('axios'));
+var Form = require('antd/lib/form/Form');
 
-var swiper = (function (_ref) {
+var Swiper = (function (_ref) {
   var _ref$direction = _ref.direction,
       _ref$loop = _ref.loop,
       children = _ref.children;
@@ -38,8 +40,113 @@ var swiperItem = (function (_ref) {
   }, children);
 });
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
 function _objectDestructuringEmpty(obj) {
   if (obj == null) throw new TypeError("Cannot destructure undefined");
+}
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+  return arr2;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 function styleInject(css, ref) {
@@ -127,7 +234,316 @@ function BlockSelector(_ref) {
   }));
 }
 
+var setObCache = function setObCache(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+var getObCache = function getObCache(key) {
+  var _ob = localStorage.getItem(key);
+
+  if (_ob) {
+    return JSON.parse(_ob);
+  }
+};
+
+var RequestConfig = {
+  config: {},
+  onRequest: null // 请求数据格式化
+
+};
+var request = function request(_ref) {
+  var url = _ref.url,
+      data = _ref.data,
+      cache = _ref.cache,
+      method = _ref.method;
+  return new Promise(function (resolve, reject) {
+    var user = getObCache('user') || {};
+
+    if (cache && getObCache(url)) {
+      return getObCache(url);
+    }
+
+    var config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Auth': user.token
+      },
+      method: method || 'post',
+      url: url,
+      data: data,
+      transformRequest: [function (data, headers) {
+        // Do whatever you want to transform the data
+        if (!data) return data;
+        Object.keys(data).forEach(function (key) {
+          if (data[key] === undefined || data[key] === null) {
+            delete data[key];
+          }
+        });
+
+        if (RequestConfig.onRequest) {
+          return RequestConfig.onRequest(data);
+        } else {
+          return JSON.stringify(data);
+        }
+      }]
+    };
+    Object.assign(config, RequestConfig.config);
+    axios(config).then(function (response) {
+      // console.log(response.data);
+      // console.log(response.status);
+      // console.log(response.statusText);
+      // console.log(response.headers);
+      // console.log(response.config);
+      console.log("\u3010REQUEST SUCCESS\u3011 \u8BBF\u95EE\u5730\u5740:".concat(url));
+      console.log("\u3010REQUEST SUCCESS\u3011 \u8BF7\u6C42\u53C2\u6570:", data);
+      console.log("\u3010REQUEST SUCCESS\u3011 \u8FD4\u56DE\u7ED3\u679C:", response.data);
+
+      if (response.data && response.data.status === 0) {
+        setObCache(url, response.data);
+      }
+
+      resolve(response.data);
+    }).catch(function (error) {
+      console.error('ERROR: 请求异常 ！');
+
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.error('ERROR: 请求失败 ', error);
+      } else {
+        console.error('ERROR: 请求失败', error);
+      }
+
+      reject(error);
+    }).finally(function () {// reject('请求超时!')
+    });
+  });
+};
+var Ajax = {
+  RequestConfig: RequestConfig,
+  request: request
+};
+
+var ChUtils = _objectSpread2({}, Ajax);
+
+var css$2 = "";
+styleInject(css$2);
+
+var ChForm = (function (_ref) {
+  var formData = _ref.formData,
+      onFinish = _ref.onFinish,
+      form = _ref.form;
+  var layout = {
+    labelCol: {
+      span: 24
+    },
+    wrapperCol: {
+      span: 24
+    }
+  };
+
+  var renderFormItem = function renderFormItem(item) {
+    var dom;
+    console.log('debug: item.type', item.type);
+
+    switch (item.type) {
+      case 'input':
+        dom = React__default.createElement(antd.Input, null);
+        break;
+
+      case 'radio-group':
+        dom = React__default.createElement(antd.Radio.Group, {
+          options: item.options,
+          optionType: "button",
+          buttonStyle: "solid"
+        });
+        break;
+
+      default:
+        dom = React__default.createElement(antd.Input, null);
+    }
+
+    return dom;
+  };
+
+  return React__default.createElement("div", null, React__default.createElement(antd.Form, Object.assign({
+    form: form
+  }, layout, {
+    onFinish: onFinish
+  }), formData && formData.map(function (item) {
+    return React__default.createElement(antd.Form.Item, {
+      key: "formData_".concat(item.name),
+      label: item.label,
+      name: item.name,
+      rules: item.rules,
+      initialValue: item.initialValue
+    }, renderFormItem(item));
+  })));
+});
+
+var css$3 = "";
+styleInject(css$3);
+
+var ChTablePanel = (function (_ref) {
+  var columns = _ref.columns,
+      url = _ref.url,
+      urlAdd = _ref.urlAdd,
+      urlDelete = _ref.urlDelete,
+      urlUpdate = _ref.urlUpdate,
+      formData = _ref.formData,
+      expandable = _ref.expandable,
+      query = _ref.query,
+      onAddBefore = _ref.onAddBefore;
+
+  var _useForm = Form.useForm(),
+      _useForm2 = _slicedToArray(_useForm, 1),
+      form = _useForm2[0];
+
+  var _useState = React.useState([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      list = _useState2[0],
+      setList = _useState2[1];
+
+  var _useState3 = React.useState(),
+      _useState4 = _slicedToArray(_useState3, 2),
+      editor = _useState4[0],
+      setEditor = _useState4[1];
+
+  var _useState5 = React.useState(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      showEditModal = _useState6[0],
+      setShowEditModal = _useState6[1];
+
+  React.useEffect(function () {
+    doFetchList();
+  }, []);
+
+  var doFetchList = function doFetchList() {
+    ChUtils.request({
+      url: url,
+      data: query
+    }).then(function (res) {
+      if (res && res.status == 0 && res.list) {
+        setList(res.list);
+      }
+    });
+  };
+
+  var doDeleteItem = function doDeleteItem(id) {
+    ChUtils.request({
+      url: urlDelete,
+      data: {
+        id: id
+      }
+    }).then(function (res) {
+      if (res && res.status == 0) {
+        doFetchList();
+      }
+    });
+  };
+
+  var doAddItem = function doAddItem(item) {
+    if (!onAddBefore) ; else {
+      onAddBefore(item);
+    }
+
+    ChUtils.request({
+      url: urlAdd,
+      data: item
+    }).then(function (res) {
+      if (res && res.status == 0) {
+        doFetchList();
+        setShowEditModal(false);
+        setEditor(null);
+      }
+    });
+  };
+
+  var doEditItem = function doEditItem(item) {
+    item.id = editor.id;
+    ChUtils.request({
+      url: urlUpdate,
+      data: item
+    }).then(function (res) {
+      if (res && res.status == 0) {
+        doFetchList();
+        setShowEditModal(false);
+        setEditor(null);
+      }
+    });
+  };
+
+  var _columns = columns.concat([{
+    title: '',
+    dataIndex: 'option',
+    key: 'option',
+    render: function render(_, item) {
+      return React__default.createElement("div", null, React__default.createElement(antd.Popconfirm, {
+        title: "\u60A8\u786E\u5B9A\u5220\u9664\u6B64\u9879?",
+        onConfirm: function onConfirm() {
+          doDeleteItem(item.id);
+        },
+        okText: "Yes",
+        cancelText: "No"
+      }, React__default.createElement(antd.Button, {
+        type: 'link'
+      }, "\u5220\u9664")), React__default.createElement(antd.Button, {
+        onClick: function onClick() {
+          setEditor(item);
+          form.setFieldsValue(item);
+          setShowEditModal(true); //   setShowGradeModal(true)
+        },
+        type: 'link'
+      }, "\u7F16\u8F91"));
+    }
+  }]);
+
+  return React__default.createElement("div", {
+    className: 'ch-tablePanel'
+  }, React__default.createElement(antd.Button, {
+    style: {
+      marginBottom: '10px'
+    },
+    onClick: function onClick() {
+      setEditor({});
+      setShowEditModal(true);
+    },
+    type: 'primary'
+  }, "\u6DFB\u52A0"), React__default.createElement(antd.Table, {
+    rowKey: 'id',
+    dataSource: list,
+    columns: _columns,
+    expandable: expandable
+  }), React__default.createElement(antd.Modal, {
+    title: "\u7F16\u8F91",
+    okText: "\u786E\u5B9A",
+    cancelText: "\u53D6\u6D88",
+    visible: showEditModal,
+    onOk: function onOk() {
+      form.validateFields().then(function (values) {
+        if (!editor.id) {
+          doAddItem(values);
+        } else {
+          doEditItem(values);
+        }
+      });
+    },
+    onCancel: function onCancel() {
+      return setShowEditModal(false);
+    }
+  }, React__default.createElement(ChForm, {
+    form: form,
+    formData: formData,
+    onFinish: function onFinish(values) {}
+  })));
+});
+
 exports.ChBlockSelector = BlockSelector;
 exports.ChMoveBook = chMoveBook;
-exports.ChSwiper = swiper;
+exports.ChSwiper = Swiper;
 exports.ChSwiperItem = swiperItem;
+exports.ChTablePanel = ChTablePanel;
+exports.ChUtils = ChUtils;

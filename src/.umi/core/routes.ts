@@ -127,7 +127,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "src/compoment/ChTablePanel/index.md",
-          "updatedTime": 1608803499367,
+          "updatedTime": 1609233348653,
           "title": "ChTablePanel(常规表格组件)",
           "slugs": [
             {

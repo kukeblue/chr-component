@@ -6,7 +6,7 @@ title: ChTablePanel(常规表格组件)
 
 ```jsx
 import React from 'react';
-import ChTablePanel from './tablePanel';
+import ChTablePanel from './index.tsx';
 import './index.less';
 
 export default () => { 

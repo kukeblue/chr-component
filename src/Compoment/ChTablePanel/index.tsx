@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm, Button, Modal} from 'antd'
-import ChUtils from '../ChUtils/index'
-import ChForm from '../ChForm/chForm'
+import ChUtils from '../../ChUtils/index'
+import ChForm from '../ChForm/index'
 import './index.less'
 import { useForm } from 'antd/lib/form/Form';
 import { ItemRender } from 'antd/lib/upload/interface';

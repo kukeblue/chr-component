@@ -6,7 +6,7 @@ title: ChForm(表单渲染处理组件)
 
 ```jsx
 import React from 'react';
-import ChForm from './chForm.tsx'
+import ChForm from './index.tsx'
 
 export default () => { 
     return <div style={{width: '350px'}}>

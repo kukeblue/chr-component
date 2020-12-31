@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox, Radio } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm'
-import './chForm.less'
+import './index.less'
 
 interface ChFormProps  {
    formData: ChFormTypes.FormDataItem[]

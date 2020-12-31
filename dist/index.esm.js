@@ -380,7 +380,7 @@ var ChForm = (function (_ref) {
 var css$3 = "";
 styleInject(css$3);
 
-var ChTablePanel = (function (_ref) {
+var index = (function (_ref) {
   var columns = _ref.columns,
       url = _ref.url,
       urlAdd = _ref.urlAdd,
@@ -534,4 +534,4 @@ var ChTablePanel = (function (_ref) {
   })));
 });
 
-export { BlockSelector as ChBlockSelector, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, ChTablePanel, ChUtils };
+export { BlockSelector as ChBlockSelector, ChForm, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils };

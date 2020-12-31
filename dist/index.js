@@ -387,7 +387,7 @@ var ChForm = (function (_ref) {
 var css$3 = "";
 styleInject(css$3);
 
-var ChTablePanel = (function (_ref) {
+var index = (function (_ref) {
   var columns = _ref.columns,
       url = _ref.url,
       urlAdd = _ref.urlAdd,
@@ -542,8 +542,9 @@ var ChTablePanel = (function (_ref) {
 });
 
 exports.ChBlockSelector = BlockSelector;
+exports.ChForm = ChForm;
 exports.ChMoveBook = chMoveBook;
 exports.ChSwiper = Swiper;
 exports.ChSwiperItem = swiperItem;
-exports.ChTablePanel = ChTablePanel;
+exports.ChTablePanel = index;
 exports.ChUtils = ChUtils;

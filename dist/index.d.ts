@@ -1,7 +1,8 @@
-import ChSwiper from './compoment/ChSwiper/Swiper';
-import ChSwiperItem from './compoment/ChSwiper/swiperItem';
-import ChMoveBook from './compoment/ChMoveBook/chMoveBook';
-import ChBlockSelector from './compoment/ChBlockSelector/blockSelector';
-import ChUtils from './compoment/ChUtils/index';
-import ChTablePanel from './compoment/ChTablePanel/ChTablePanel';
-export { ChSwiper, ChSwiperItem, ChMoveBook, ChBlockSelector, ChUtils, ChTablePanel };
+import ChSwiper from './component/ChSwiper/Swiper';
+import ChSwiperItem from './component/ChSwiper/swiperItem';
+import ChMoveBook from './component/ChMoveBook/chMoveBook';
+import ChBlockSelector from './component/ChBlockSelector/blockSelector';
+import ChUtils from './ChUtils/index';
+import ChTablePanel from './component/ChTablePanel/index';
+import ChForm from './component/ChForm/index';
+export { ChSwiper, ChSwiperItem, ChMoveBook, ChBlockSelector, ChUtils, ChTablePanel, ChForm };

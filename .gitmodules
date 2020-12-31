@@ -1,3 +1,3 @@
-[submodule "src/compoment/ChUtils"]
-	path = src/compoment/ChUtils
+[submodule "src/component/ChUtils"]
+	path = src/component/ChUtils
 	url = https://github.com/kukeblue/utils.git

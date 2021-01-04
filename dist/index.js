@@ -541,8 +541,38 @@ var index = (function (_ref) {
   })));
 });
 
+var css$4 = ".ch-layout .ch-layoutSider {\n  background-color: #1C3039;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-avatar {\n  width: 80px;\n  height: 80px;\n  background-color: #ff6a00;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 30px;\n  color: #fff;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-item {\n  cursor: pointer;\n  color: #fff;\n  width: 80px;\n  height: 110px;\n  border-bottom: 1px solid #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-item_selected {\n  cursor: pointer;\n  color: #fff;\n  width: 80px;\n  height: 110px;\n  border-bottom: 1px solid #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #ff6a00;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-item:hover {\n  color: #ff6a00;\n}\n.ch-layout .ch-layoutHeader {\n  height: 80px;\n  background-color: #fff;\n  display: flex;\n  align-items: center;\n}\n";
+styleInject(css$4);
+
+var Header = antd.Layout.Header,
+    Footer = antd.Layout.Footer,
+    Sider = antd.Layout.Sider,
+    Content = antd.Layout.Content;
+var index$1 = (function (props) {
+  return React__default.createElement(React__default.Fragment, null, React__default.createElement(antd.Layout, {
+    className: 'ch-layout'
+  }, React__default.createElement(Sider, {
+    width: '80',
+    className: 'ch-layoutSider',
+    theme: "light"
+  }, React__default.createElement("div", {
+    className: 'ch-layoutSider-avatar'
+  }, props.adminIcon || 'CH'), React__default.createElement("div", null, props.sider.siderItems && props.sider.siderItems.map(function (item, index) {
+    return React__default.createElement("div", {
+      onClick: function onClick() {
+        return item.click();
+      },
+      key: item.text,
+      className: props.sider.currentItem && props.sider.currentItem == index ? 'ch-layoutSider-item_selected' : 'ch-layoutSider-item'
+    }, React__default.createElement("span", null, item.icon), React__default.createElement("div", null, item.text));
+  }))), React__default.createElement(antd.Layout, null, React__default.createElement(Header, {
+    className: 'ch-layoutHeader'
+  }, props.header), React__default.createElement(Content, null, props.children))));
+});
+
 exports.ChBlockSelector = BlockSelector;
 exports.ChForm = ChForm;
+exports.ChLayout = index$1;
 exports.ChMoveBook = chMoveBook;
 exports.ChSwiper = Swiper;
 exports.ChSwiperItem = swiperItem;

@@ -19,4 +19,7 @@ export default defineConfig({
   extraBabelPlugins: [
     'transform-remove-strict-mode',
   ],
+  theme: {
+    '@primary-color': '#ff6a00',
+  },
 });

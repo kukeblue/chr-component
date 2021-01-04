@@ -1,0 +1,42 @@
+@import '../../var.less';
+
+.ch-layout {
+    .ch-layoutSider {
+        background-color: #1C3039;
+        .ch-layoutSider-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: @primary-color;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #fff;
+            // border: 1px solid #1C3039;
+        }
+        .ch-layoutSider-item {
+            cursor: pointer;
+            color: #fff;
+            width: 80px;
+            height: 110px;
+            border-bottom: 1px solid #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .ch-layoutSider-item_selected {
+            .ch-layoutSider-item();
+            color: @primary-color;
+        }
+        .ch-layoutSider-item:hover {
+            color: @primary-color;
+        }
+    }
+    .ch-layoutHeader {
+        height: 80px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+    }
+}

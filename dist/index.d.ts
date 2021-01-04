@@ -5,4 +5,5 @@ import ChBlockSelector from './component/ChBlockSelector/blockSelector';
 import ChUtils from './ChUtils/index';
 import ChTablePanel from './component/ChTablePanel/index';
 import ChForm from './component/ChForm/index';
-export { ChSwiper, ChSwiperItem, ChMoveBook, ChBlockSelector, ChUtils, ChTablePanel, ChForm };
+import ChLayout from './component/ChLayout/index';
+export { ChSwiper, ChSwiperItem, ChMoveBook, ChBlockSelector, ChUtils, ChTablePanel, ChForm, ChLayout };

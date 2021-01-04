@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "chui-lib",
+  "version": "1.0.1",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

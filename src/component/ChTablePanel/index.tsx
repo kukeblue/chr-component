@@ -14,11 +14,11 @@ interface TablePanelProps {
     urlAdd: string,
     urlUpdate: string,
     formData: ChFormTypes.FormDataItem[]
-    expandable: {
+    expandable?: {
         expandedRowRender: (item:Item) => React.ReactElement,
-    }
-    onAddBefore: (item: Item)=>void
-    query: Object
+    },
+    onAddBefore?: (item: Item)=>void,
+    query?: Object,
 }
 // 表格Item
 type Item = any

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, Radio, Popconfirm, Table, Modal } from 'antd';
+import { Button, Form, Input, Radio, Popconfirm, Table, Modal, Layout } from 'antd';
 import axios from 'axios';
 import { useForm } from 'antd/lib/form/Form';
 
@@ -534,4 +534,33 @@ var index = (function (_ref) {
   })));
 });
 
-export { BlockSelector as ChBlockSelector, ChForm, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils };
+var css$4 = ".ch-layout .ch-layoutSider {\n  background-color: #1C3039;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-avatar {\n  width: 80px;\n  height: 80px;\n  background-color: #ff6a00;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 30px;\n  color: #fff;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-item {\n  cursor: pointer;\n  color: #fff;\n  width: 80px;\n  height: 110px;\n  border-bottom: 1px solid #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-item_selected {\n  cursor: pointer;\n  color: #fff;\n  width: 80px;\n  height: 110px;\n  border-bottom: 1px solid #fff;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  color: #ff6a00;\n}\n.ch-layout .ch-layoutSider .ch-layoutSider-item:hover {\n  color: #ff6a00;\n}\n.ch-layout .ch-layoutHeader {\n  height: 80px;\n  background-color: #fff;\n  display: flex;\n  align-items: center;\n}\n";
+styleInject(css$4);
+
+var Header = Layout.Header,
+    Footer = Layout.Footer,
+    Sider = Layout.Sider,
+    Content = Layout.Content;
+var index$1 = (function (props) {
+  return React.createElement(React.Fragment, null, React.createElement(Layout, {
+    className: 'ch-layout'
+  }, React.createElement(Sider, {
+    width: '80',
+    className: 'ch-layoutSider',
+    theme: "light"
+  }, React.createElement("div", {
+    className: 'ch-layoutSider-avatar'
+  }, props.adminIcon || 'CH'), React.createElement("div", null, props.sider.siderItems && props.sider.siderItems.map(function (item, index) {
+    return React.createElement("div", {
+      onClick: function onClick() {
+        return item.click();
+      },
+      key: item.text,
+      className: props.sider.currentItem && props.sider.currentItem == index ? 'ch-layoutSider-item_selected' : 'ch-layoutSider-item'
+    }, React.createElement("span", null, item.icon), React.createElement("div", null, item.text));
+  }))), React.createElement(Layout, null, React.createElement(Header, {
+    className: 'ch-layoutHeader'
+  }, props.header), React.createElement(Content, null, props.children))));
+});
+
+export { BlockSelector as ChBlockSelector, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils };

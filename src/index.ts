@@ -6,6 +6,8 @@ import ChBlockSelector from './component/ChBlockSelector/blockSelector'
 import ChUtils from './ChUtils/index'
 import ChTablePanel from './component/ChTablePanel/index'
 import ChForm from './component/ChForm/index'
+import ChLayout from './component/ChLayout/index'
+
 
 
 export {
@@ -15,5 +17,6 @@ export {
     ChBlockSelector,
     ChUtils,
     ChTablePanel,
-    ChForm
+    ChForm,
+    ChLayout
 }

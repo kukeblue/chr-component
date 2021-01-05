@@ -1,7 +1,8 @@
 import Ajax from './request'
 
+
 const ChUtils = {
-    ...Ajax
+    ...Ajax,
 }
 
 export default ChUtils;

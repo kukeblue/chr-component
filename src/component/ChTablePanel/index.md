@@ -32,10 +32,10 @@ export default () => {
     ]
     return <div className='chTablePanel'>
         <ChTablePanel 
-            urlDelete='http://localhost:3000/api/grade/delete'
-            urlAdd='http://localhost:3000/api/grade/add'
-            urlUpdate='http://localhost:3000/api/grade/edit'
-            url='http://localhost:3000/api/grade/list'
+            urlDelete='http://localhost:8000/api/grade/delete'
+            urlAdd='http://localhost:8000/api/grade/add'
+            urlUpdate='http://localhost:8000/api/grade/edit'
+            url='http://localhost:8000/api/grade/page'
             columns={columns}
             formData={
                 [{
@@ -52,10 +52,10 @@ export default () => {
                         item.gradeId = record.id
                         console.log(item);
                     }}
-                    urlDelete='http://localhost:3000/api/gradeStep/delete'
-                    urlAdd='http://localhost:3000/api/gradeStep/add'
-                    urlUpdate='http://localhost:3000/api/gradeStep/edit'
-                    url='http://localhost:3000/api/gradeStep/list'
+                    urlDelete='http://localhost:8000/api/gradeStep/delete'
+                    urlAdd='http://localhost:8000/api/gradeStep/add'
+                    urlUpdate='http://localhost:8000/api/gradeStep/edit'
+                    url='http://localhost:8000/api/gradeStep/page'
                     query={{gradeId: record.id}}
                     columns={childColumns}
                     formData={

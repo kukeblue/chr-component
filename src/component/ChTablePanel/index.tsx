@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm, Button, Modal} from 'antd'
 import ChUtils from '../../ChUtils/index'
+import ChUtils2 from '../../ChUtils2'
 import ChForm from '../ChForm/index'
 import './index.less'
 import { useForm } from 'antd/lib/form/Form';
@@ -27,7 +28,7 @@ type Column = {
     title: string,
     dataIndex: string,
     key: string,
-    render?: (text:string, ob: {id: string})=>React.ReactElement
+    render?: (text:any, ob: {id: string})=>JSX.Element
 }
 export default ({
     columns,
@@ -40,25 +41,27 @@ export default ({
     query,
     onAddBefore,
 }: TablePanelProps) => {
+    const {
+        list, 
+        setList, 
+        status, 
+        setStatus, 
+        reload, 
+        total,
+    } = ChUtils2.chHooks.usePage({
+        url: url, 
+        pageSize: 10, 
+        query: {}, 
+    })
     const [form] = useForm()
-    const [list, setList] = useState<Item[]>([])
     const [editor, setEditor] = useState<Item>()
     const [showEditModal, setShowEditModal] = useState(false)
 
-    useEffect(()=>{
-        doFetchList()
-    }, [])
-    const doFetchList = () => {
-        ChUtils.request({ url, data: query}).then((res: ChAjax.ChResponse<Item>) =>{
-            if(res && res.status == 0 && res.list) {
-                setList(res.list)
-            }
-        })
-    }
+   
     const doDeleteItem = (id: string) => {
         ChUtils.request({url:urlDelete, data: {id}}).then((res: ChAjax.ChResponse<Item>) =>{
             if(res && res.status == 0) {
-                doFetchList();
+                reload();
             }
         })
     }
@@ -69,7 +72,7 @@ export default ({
         }
         ChUtils.request({url:urlAdd, data: item}).then((res: ChAjax.ChResponse<Item>) =>{
             if(res && res.status == 0) {
-                doFetchList();
+                reload();
                 setShowEditModal(false)
                 setEditor(null);
             }
@@ -79,7 +82,7 @@ export default ({
         item.id = editor.id
         ChUtils.request({url:urlUpdate, data: item}).then((res: ChAjax.ChResponse<Item>) =>{
             if(res && res.status == 0) {
-                doFetchList();
+                reload();
                 setShowEditModal(false)
                 setEditor(null);
             }
@@ -123,8 +126,17 @@ export default ({
         dataSource={list} 
         columns={_columns}
         expandable={expandable}
+        pagination={{
+            total: total,
+            defaultCurrent:1,
+            pageSize: 10,
+            onChange: (page, pageSize)=>{
+                reload(page)
+            }
+        }}
     />
-    <Modal title="编辑" 
+    <Modal title={editor && editor.id ? "编辑" : "新增"}
+        destroyOnClose
         okText="确定"
         cancelText="取消"
         visible={showEditModal} 

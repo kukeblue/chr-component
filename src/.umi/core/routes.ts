@@ -156,7 +156,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "src/component/ChLayout/index.md",
-          "updatedTime": 1609750564668,
+          "updatedTime": 1609751074000,
           "title": "ChLayout(管理后台组件)",
           "slugs": [
             {

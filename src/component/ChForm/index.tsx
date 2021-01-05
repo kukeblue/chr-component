@@ -41,6 +41,7 @@ export default ({
 
     return <div>
       <Form
+         preserve={false}
          form={form}
          {...layout}
          onFinish={onFinish}

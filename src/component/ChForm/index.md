@@ -16,11 +16,26 @@ export default () => {
                   type: 'radio-group',
                   label: 'label',
                   name: 'name',
-                  rules: [{ required: true, message: 'Please input your username!' }],
                   options: [
                         { label: '上学期', value: 'UP' },
                         { label: '下学期', value: 'DOWN' },
                   ]
+               },
+               {
+                  type: 'select',
+                  label: 'label',
+                  name: 'name1',
+                  rules: [],
+                  options: [
+                        { label: '上学期', value: 'UP' },
+                        { label: '下学期', value: 'DOWN' },
+                  ]
+               },
+               {
+                  type: 'upload',
+                  label: 'label',
+                  name: 'file',
+                  rules: [],
                }
             ]}
             onFinish={(values)=>{

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Form, Input, Radio, Popconfirm, Table, Modal, Layout } from 'antd';
+import { Button, Form, Select, Input, Upload, Radio, Popconfirm, Table, Modal, Layout } from 'antd';
 import axios from 'axios';
 import { useForm } from 'antd/lib/form/Form';
 
@@ -67,55 +67,6 @@ function _asyncToGenerator(fn) {
       _next(undefined);
     });
   };
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
 }
 
 function _objectDestructuringEmpty(obj) {
@@ -276,14 +227,14 @@ var getObCache = function getObCache(key) {
 
 var RequestConfig = {
   config: {},
-  onRequest: null // 请求数据格式化
+  onRequest: undefined // 请求数据格式化
 
 };
-var request = function request(_ref) {
-  var url = _ref.url,
-      data = _ref.data,
-      cache = _ref.cache,
-      method = _ref.method;
+var request = function request(requestPrams) {
+  var url = requestPrams.url,
+      data = requestPrams.data,
+      cache = requestPrams.cache,
+      method = requestPrams.method;
   return new Promise(function (resolve, reject) {
     var user = getObCache('user') || {};
 
@@ -299,7 +250,7 @@ var request = function request(_ref) {
       method: method || 'post',
       url: url,
       data: data,
-      transformRequest: [function (data, headers) {
+      transformRequest: [function (data) {
         // Do whatever you want to transform the data
         if (!data) return data;
         Object.keys(data).forEach(function (key) {
@@ -316,14 +267,14 @@ var request = function request(_ref) {
       }]
     };
     Object.assign(config, RequestConfig.config);
+    console.log("\u3010REQUEST SUCCESS\u3011 \u8BBF\u95EE\u5730\u5740:".concat(url));
+    console.log("\u3010REQUEST SUCCESS\u3011 \u8BF7\u6C42\u53C2\u6570:", config.data);
     axios(config).then(function (response) {
       // console.log(response.data);
       // console.log(response.status);
       // console.log(response.statusText);
       // console.log(response.headers);
       // console.log(response.config);
-      console.log("\u3010REQUEST SUCCESS\u3011 \u8BBF\u95EE\u5730\u5740:".concat(url));
-      console.log("\u3010REQUEST SUCCESS\u3011 \u8BF7\u6C42\u53C2\u6570:", data);
       console.log("\u3010REQUEST SUCCESS\u3011 \u8FD4\u56DE\u7ED3\u679C:", response.data);
 
       if (response.data && response.data.status === 0) {
@@ -355,8 +306,6 @@ var Ajax = {
   RequestConfig: RequestConfig,
   request: request
 };
-
-var ChUtils = _objectSpread2({}, Ajax);
 
 function usePage(props) {
   var url = props.url,
@@ -398,7 +347,7 @@ function usePage(props) {
               ref.current.pageNo = pageNo;
               pz = pageSize || 10;
               _context.next = 6;
-              return ChUtils.request({
+              return Ajax.request({
                 url: url,
                 data: {
                   query: query,
@@ -491,16 +440,64 @@ function usePage(props) {
     total: total
   };
 }
+function useOptionFormListHook(_ref3) {
+  var url = _ref3.url;
+
+  var _useState7 = useState([]),
+      _useState8 = _slicedToArray(_useState7, 2),
+      list = _useState8[0],
+      setList = _useState8[1];
+
+  var _useState9 = useState([]),
+      _useState10 = _slicedToArray(_useState9, 2),
+      options = _useState10[0],
+      setOptions = _useState10[1];
+
+  useEffect(function () {
+    Ajax.request({
+      url: url,
+      data: {}
+    }).then(function (res) {
+      if (res.status == 0 && res.list) {
+        var newOptions = [];
+        res.list.forEach(function (item) {
+          options.push({
+            label: item.name,
+            value: item.id
+          });
+        });
+        setList(res.list);
+        setOptions(newOptions);
+      }
+    });
+  }, []);
+  return {
+    list: list,
+    options: options
+  };
+}
 var chHooks = {
-  usePage: usePage
+  usePage: usePage,
+  useOptionFormListHook: useOptionFormListHook
 };
 
-var ChUtils2 = {
-  chHooks: chHooks
+var ChUtils = {
+  chHooks: chHooks,
+  Ajax: Ajax
 };
 
 var css$2 = "";
 styleInject(css$2);
+
+var Option = Select.Option;
+var FormItemType;
+
+(function (FormItemType) {
+  FormItemType["input"] = "input";
+  FormItemType["radioGroup"] = "radio-group";
+  FormItemType["select"] = "select";
+  FormItemType["upload"] = "upload";
+})(FormItemType || (FormItemType = {}));
 
 var ChForm = (function (_ref) {
   var formData = _ref.formData,
@@ -513,9 +510,11 @@ var ChForm = (function (_ref) {
     wrapperCol: {
       span: 24
     }
-  };
+  }; // @type JSX Function | @dec 渲染单个formItem
 
   var renderFormItem = function renderFormItem(item) {
+    var _item$options;
+
     var dom;
     console.log('debug: item.type', item.type);
 
@@ -532,11 +531,48 @@ var ChForm = (function (_ref) {
         });
         break;
 
+      case 'select':
+        dom = React.createElement(Select, null, (_item$options = item.options) === null || _item$options === void 0 ? void 0 : _item$options.map(function (item) {
+          return React.createElement(Option, {
+            key: item.value,
+            value: item.value
+          }, item.label);
+        }));
+        break;
+
+      case 'upload':
+        dom = React.createElement(Upload, {
+          name: "file",
+          action: item.uploadUrl ? item.uploadUrl : "/fileUpload",
+          listType: "picture"
+        }, React.createElement(Button, null, "Click to upload"));
+        break;
+
       default:
         dom = React.createElement(Input, null);
     }
 
     return dom;
+  };
+
+  var buildFormItemProps = function buildFormItemProps(item) {
+    item.key = "formData_".concat(item.name);
+
+    if (item.type == 'upload') {
+      item.valuePropName = "fileList";
+
+      item.getValueFromEvent = function (e) {
+        console.log('Upload event:', e);
+
+        if (Array.isArray(e)) {
+          return e;
+        }
+
+        return e && e.fileList;
+      };
+    }
+
+    return item;
   };
 
   return React.createElement("div", null, React.createElement(Form, Object.assign({
@@ -545,13 +581,8 @@ var ChForm = (function (_ref) {
   }, layout, {
     onFinish: onFinish
   }), formData && formData.map(function (item) {
-    return React.createElement(Form.Item, {
-      key: "formData_".concat(item.name),
-      label: item.label,
-      name: item.name,
-      rules: item.rules,
-      initialValue: item.initialValue
-    }, renderFormItem(item));
+    var formItemProps = buildFormItemProps(item);
+    return React.createElement(Form.Item, Object.assign({}, formItemProps), renderFormItem(item));
   })));
 });
 
@@ -569,17 +600,14 @@ var index = (function (_ref) {
       query = _ref.query,
       onAddBefore = _ref.onAddBefore;
 
-  var _ChUtils2$chHooks$use = ChUtils2.chHooks.usePage({
+  var _ChUtils$chHooks$useP = ChUtils.chHooks.usePage({
     url: url,
     pageSize: 10,
     query: {}
   }),
-      list = _ChUtils2$chHooks$use.list,
-      setList = _ChUtils2$chHooks$use.setList,
-      status = _ChUtils2$chHooks$use.status,
-      setStatus = _ChUtils2$chHooks$use.setStatus,
-      reload = _ChUtils2$chHooks$use.reload,
-      total = _ChUtils2$chHooks$use.total;
+      list = _ChUtils$chHooks$useP.list,
+      reload = _ChUtils$chHooks$useP.reload,
+      total = _ChUtils$chHooks$useP.total;
 
   var _useForm = useForm(),
       _useForm2 = _slicedToArray(_useForm, 1),
@@ -596,7 +624,7 @@ var index = (function (_ref) {
       setShowEditModal = _useState4[1];
 
   var doDeleteItem = function doDeleteItem(id) {
-    ChUtils.request({
+    ChUtils.Ajax.request({
       url: urlDelete,
       data: {
         id: id
@@ -613,7 +641,7 @@ var index = (function (_ref) {
       onAddBefore(item);
     }
 
-    ChUtils.request({
+    ChUtils.Ajax.request({
       url: urlAdd,
       data: item
     }).then(function (res) {
@@ -627,7 +655,7 @@ var index = (function (_ref) {
 
   var doEditItem = function doEditItem(item) {
     item.id = editor.id;
-    ChUtils.request({
+    ChUtils.Ajax.request({
       url: urlUpdate,
       data: item
     }).then(function (res) {
@@ -735,11 +763,11 @@ var index$1 = (function (props) {
         return item.click();
       },
       key: item.text,
-      className: props.sider.currentItem && props.sider.currentItem == index ? 'ch-layoutSider-item_selected' : 'ch-layoutSider-item'
+      className: props.sider.currentItem == index + 1 ? 'ch-layoutSider-item_selected' : 'ch-layoutSider-item'
     }, React.createElement("span", null, item.icon), React.createElement("div", null, item.text));
   }))), React.createElement(Layout, null, React.createElement(Header, {
     className: 'ch-layoutHeader'
   }, props.header), React.createElement(Content, null, props.children))));
 });
 
-export { BlockSelector as ChBlockSelector, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils };
+export { BlockSelector as ChBlockSelector, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils, FormItemType };

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import ChUtils from '../ChUtils/index'
+import Ajax, { ChCommonResponse } from './request'
 
 //@type Hook Function 分页Hoos,TS版本
 interface usePageProps {
@@ -27,7 +27,7 @@ export function usePage(props: usePageProps) {
     if(! pageNo ) pageNo = 1; 
     ref.current.pageNo = pageNo;
     const pz = pageSize || 10;
-    const resp = await ChUtils.request({url, data: {
+    const resp:any= await Ajax.request({url, data: {
       query, 
       pageNo, 
       pageSize:pz
@@ -60,8 +60,47 @@ export function usePage(props: usePageProps) {
   return {list, setList, status, setStatus, reload, loadMore, total};
 }
 
+
+interface useOptionFormListHookProps {
+  url: string
+}
+
+interface Options {
+  label: string,
+  value: string,
+}
+
+export function useOptionFormListHook({
+  url
+}:useOptionFormListHookProps) {
+  const [list, setList] = useState([]);
+  const [options, setOptions] = useState<Options[]>([]);
+
+  useEffect(()=>{
+    Ajax.request({url,data: {}}).then((res: any)=>{
+      if(res.status ==  0 && res.list) {
+          let newOptions:Options[] = []
+          res.list.forEach((item:any)=>{
+            options.push({
+              label: item.name,
+              value: item.id,
+            })
+          })
+          setList(res.list)
+          setOptions(newOptions);
+      }
+    })
+  }, [])
+  return {
+    list,
+    options
+  }
+}
+
+
 const chHooks = {
   usePage,
+  useOptionFormListHook,
 }
 
 export default chHooks  

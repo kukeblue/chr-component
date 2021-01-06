@@ -1,10 +1,39 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Radio } from 'antd';
+import { Form, Input, Button, Checkbox, Radio, Select, Upload } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm'
 import './index.less'
-
+const { Option } = Select;
+export enum FormItemType  {
+      input = 'input',
+      radioGroup = 'radio-group',
+      select = 'select',
+      upload = 'upload'
+}
+interface FormItemRule  {
+      required: boolean,
+      message: string,
+}
+type CheckboxValueType = string | number;
+interface FormItemOptionsType {
+      label: React.ReactNode;
+      value: CheckboxValueType;
+      style?: React.CSSProperties;
+      disabled?: boolean;
+}
+export interface FormDataItem {
+   key?: string,
+   type: FormItemType,
+   label: string,
+   name: string,
+   rules?: FormItemRule[],
+   options?: FormItemOptionsType[],
+   initialValue?: any,
+   valuePropName?: string,
+   getValueFromEvent?: (e:any)=>any,
+   uploadUrl?:string
+}
 interface ChFormProps  {
-   formData: ChFormTypes.FormDataItem[]
+   formData: FormDataItem[]
    onFinish?: (values: any)=>void,
    form?: FormInstance<any>
 }
@@ -14,32 +43,62 @@ export default ({
    onFinish,
    form
  } : ChFormProps) => {
+
+
+
+
    const layout = {
       labelCol: { span: 24 },
       wrapperCol: { span: 24 },
-    };
+   };
+   // @type JSX Function | @dec 渲染单个formItem
+   const renderFormItem  = (item: FormDataItem) => {
+      let dom
+      console.log('debug: item.type', item.type)
+      switch(item.type) {
+      case 'input':
+         dom = <Input />
+         break
+      case 'radio-group':
+         dom = <Radio.Group
+               options={item.options}
+               optionType="button"
+               buttonStyle="solid"
+         />
+         break
+      case 'select':
+         dom = <Select>
+            {item.options?.map(item=>{
+               return <Option key={item.value} value={item.value}>{item.label}</Option>
+            })}
+         </Select>
+         break
+      case 'upload':
+         dom = <Upload name="file" action={item.uploadUrl ? item.uploadUrl : "/fileUpload"} listType="picture">
+            <Button>Click to upload</Button>
+         </Upload>
+      break
+      default:
+         dom = <Input />
+      }
+      return dom
+   }
+   const buildFormItemProps = (item: FormDataItem)=> {
+      item.key = `formData_${item.name}`
+      if(item.type == 'upload') {
+         item.valuePropName = "fileList";
+         item.getValueFromEvent = (e: any) => {
+            console.log('Upload event:', e);
+            if (Array.isArray(e)) {
+              return e;
+            }
+            return e && e.fileList;
+         };
+      }
+      return item;
+   }
 
-    const renderFormItem  = (item: ChFormTypes.FormDataItem) => {
-         let dom
-         console.log('debug: item.type', item.type)
-         switch(item.type) {
-         case 'input':
-            dom = <Input />
-            break
-         case 'radio-group':
-            dom = <Radio.Group
-                  options={item.options}
-                  optionType="button"
-                  buttonStyle="solid"
-            />
-            break
-         default:
-            dom = <Input />
-         }
-         return dom
-    }
-
-    return <div>
+   return <div>
       <Form
          preserve={false}
          form={form}
@@ -48,12 +107,9 @@ export default ({
       >
          {
             formData && formData.map(item=>{
+               let formItemProps = buildFormItemProps(item);
                return <Form.Item
-                  key={`formData_${item.name}`}
-                  label={item.label}
-                  name={item.name}
-                  rules={item.rules}
-                  initialValue={item.initialValue}
+                  {...formItemProps}
                >
                   {renderFormItem(item)}
                </Form.Item>

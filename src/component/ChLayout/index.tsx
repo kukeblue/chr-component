@@ -38,7 +38,7 @@ export default (props: ChLayoutProps) => {
                         return <div  
                             onClick={()=>item.click()}
                             key={item.text} 
-                            className={props.sider.currentItem && props.sider.currentItem == index ? 'ch-layoutSider-item_selected' : 'ch-layoutSider-item'}>
+                            className={props.sider.currentItem == (index + 1) ? 'ch-layoutSider-item_selected' : 'ch-layoutSider-item'}>
                                 <span>{item.icon}</span>
                                 <div>{item.text}</div>
                         </div>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm, Button, Modal} from 'antd'
-import ChUtils from '../../ChUtils/index'
-import ChUtils2 from '../../ChUtils2'
+import ChUtils from '../../ChUtils'
 import ChForm from '../ChForm/index'
 import './index.less'
 import { useForm } from 'antd/lib/form/Form';
-import { ItemRender } from 'antd/lib/upload/interface';
+import { FormDataItem } from '../ChForm/index';
+
+type ChResponse<T> = any
 
 // 表格Props
 interface TablePanelProps {
@@ -14,7 +15,7 @@ interface TablePanelProps {
     urlDelete: string,
     urlAdd: string,
     urlUpdate: string,
-    formData: ChFormTypes.FormDataItem[]
+    formData: FormDataItem[]
     expandable?: {
         expandedRowRender: (item:Item) => React.ReactElement,
     },
@@ -43,12 +44,9 @@ export default ({
 }: TablePanelProps) => {
     const {
         list, 
-        setList, 
-        status, 
-        setStatus, 
         reload, 
         total,
-    } = ChUtils2.chHooks.usePage({
+    } = ChUtils.chHooks.usePage({
         url: url, 
         pageSize: 10, 
         query: {}, 
@@ -59,7 +57,7 @@ export default ({
 
    
     const doDeleteItem = (id: string) => {
-        ChUtils.request({url:urlDelete, data: {id}}).then((res: ChAjax.ChResponse<Item>) =>{
+        ChUtils.Ajax.request({url:urlDelete, data: {id}}).then((res: ChResponse<Item>) =>{
             if(res && res.status == 0) {
                 reload();
             }
@@ -70,7 +68,7 @@ export default ({
         }else {
             onAddBefore(item)
         }
-        ChUtils.request({url:urlAdd, data: item}).then((res: ChAjax.ChResponse<Item>) =>{
+        ChUtils.Ajax.request({url:urlAdd, data: item}).then((res: ChResponse<Item>) =>{
             if(res && res.status == 0) {
                 reload();
                 setShowEditModal(false)
@@ -80,7 +78,7 @@ export default ({
     }
     const doEditItem = (item: Item) => {
         item.id = editor.id
-        ChUtils.request({url:urlUpdate, data: item}).then((res: ChAjax.ChResponse<Item>) =>{
+        ChUtils.Ajax.request({url:urlUpdate, data: item}).then((res: ChResponse<Item>) =>{
             if(res && res.status == 0) {
                 reload();
                 setShowEditModal(false)
@@ -154,8 +152,7 @@ export default ({
             form={form}
             formData = {formData}
             onFinish={(values)=>{
-                
-            }}/>
+        }}/>
     </Modal>
     </div>
 };

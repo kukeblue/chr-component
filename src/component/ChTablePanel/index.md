@@ -8,8 +8,12 @@ title: ChTablePanel(常规表格组件)
 import React from 'react';
 import ChTablePanel from './index.tsx';
 import './index.less';
+import { useOptionFormListHook } from '../../ChUtils/ChHooks'
+
 
 export default () => { 
+
+    const { options } = useOptionFormListHook({url: 'http://api-paper.kukechen.top/api/grade/list'})
 
     const columns = [
         {
@@ -35,7 +39,7 @@ export default () => {
             urlDelete='http://localhost:8000/api/grade/delete'
             urlAdd='http://localhost:8000/api/grade/add'
             urlUpdate='http://localhost:8000/api/grade/edit'
-            url='http://localhost:8000/api/grade/page'
+            url='http://api-paper.kukechen.top/api/grade/page'
             columns={columns}
             formData={
                 [{
@@ -55,7 +59,7 @@ export default () => {
                     urlDelete='http://localhost:8000/api/gradeStep/delete'
                     urlAdd='http://localhost:8000/api/gradeStep/add'
                     urlUpdate='http://localhost:8000/api/gradeStep/edit'
-                    url='http://localhost:8000/api/gradeStep/page'
+                    url='http://api-paper.kukechen.top/api/gradeStep/page'
                     query={{gradeId: record.id}}
                     columns={childColumns}
                     formData={
@@ -66,7 +70,7 @@ export default () => {
                                 name: 'name',
                                 rules: [{ required: true, message: '请输入年级名称' }],
                             },{
-                                type: 'radio-group',
+                                type: 'select',
                                 label: '学期',
                                 name: 'term',
                                 rules: [{ required: true, message: '请选择学期' }],

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button, Form, Input, Radio, Popconfirm, Table, Modal, Layout } from 'antd';
 import axios from 'axios';
 import { useForm } from 'antd/lib/form/Form';
@@ -32,6 +32,42 @@ var swiperItem = (function (_ref) {
     className: "swiper-slide"
   }, children);
 });
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -322,6 +358,147 @@ var Ajax = {
 
 var ChUtils = _objectSpread2({}, Ajax);
 
+function usePage(props) {
+  var url = props.url,
+      pageSize = props.pageSize,
+      query = props.query,
+      onReloadAfter = props.onReloadAfter;
+
+  var _useState = useState('more'),
+      _useState2 = _slicedToArray(_useState, 2),
+      status = _useState2[0],
+      setStatus = _useState2[1];
+
+  var _useState3 = useState(0),
+      _useState4 = _slicedToArray(_useState3, 2),
+      total = _useState4[0],
+      setTotal = _useState4[1];
+
+  var _useState5 = useState([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      list = _useState6[0],
+      setList = _useState6[1];
+
+  var ref = useRef({
+    pageNo: 1
+  });
+  useEffect(function () {
+    reload();
+  }, []);
+
+  var reload = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(pageNo) {
+      var pz, resp, newList;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              setStatus('loading');
+              if (!pageNo) pageNo = 1;
+              ref.current.pageNo = pageNo;
+              pz = pageSize || 10;
+              _context.next = 6;
+              return ChUtils.request({
+                url: url,
+                data: {
+                  query: query,
+                  pageNo: pageNo,
+                  pageSize: pz
+                }
+              });
+
+            case 6:
+              resp = _context.sent;
+              console.log('分页PAGE获取成功', resp);
+
+              if (resp.status === 0) {
+                setTotal(resp.page.total);
+
+                if (pageNo === 1) {
+                  newList = resp.page.list;
+                } else {
+                  newList = [].concat(list, resp.page.list.filter(function (x) {
+                    return list.find(function (y) {
+                      return y.id === x.id;
+                    }) ? false : true;
+                  }));
+                }
+
+                setList(newList);
+                ref.current.pageNo = pageNo + 1;
+
+                if (resp.page.pages < pz) {
+                  setStatus('noMore');
+                } else {
+                  setStatus("more");
+                }
+              } else {
+                setStatus("noMore");
+              }
+
+              onReloadAfter && onReloadAfter(resp);
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function reload(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  var loadMore = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              if (!(status === 'noMore')) {
+                _context2.next = 2;
+                break;
+              }
+
+              return _context2.abrupt("return");
+
+            case 2:
+              _context2.next = 4;
+              return reload(ref.current.pageNo);
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function loadMore() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  return {
+    list: list,
+    setList: setList,
+    status: status,
+    setStatus: setStatus,
+    reload: reload,
+    loadMore: loadMore,
+    total: total
+  };
+}
+var chHooks = {
+  usePage: usePage
+};
+
+var ChUtils2 = {
+  chHooks: chHooks
+};
+
 var css$2 = "";
 styleInject(css$2);
 
@@ -363,6 +540,7 @@ var ChForm = (function (_ref) {
   };
 
   return React.createElement("div", null, React.createElement(Form, Object.assign({
+    preserve: false,
     form: form
   }, layout, {
     onFinish: onFinish
@@ -391,39 +569,31 @@ var index = (function (_ref) {
       query = _ref.query,
       onAddBefore = _ref.onAddBefore;
 
+  var _ChUtils2$chHooks$use = ChUtils2.chHooks.usePage({
+    url: url,
+    pageSize: 10,
+    query: {}
+  }),
+      list = _ChUtils2$chHooks$use.list,
+      setList = _ChUtils2$chHooks$use.setList,
+      status = _ChUtils2$chHooks$use.status,
+      setStatus = _ChUtils2$chHooks$use.setStatus,
+      reload = _ChUtils2$chHooks$use.reload,
+      total = _ChUtils2$chHooks$use.total;
+
   var _useForm = useForm(),
       _useForm2 = _slicedToArray(_useForm, 1),
       form = _useForm2[0];
 
-  var _useState = useState([]),
+  var _useState = useState(),
       _useState2 = _slicedToArray(_useState, 2),
-      list = _useState2[0],
-      setList = _useState2[1];
+      editor = _useState2[0],
+      setEditor = _useState2[1];
 
-  var _useState3 = useState(),
+  var _useState3 = useState(false),
       _useState4 = _slicedToArray(_useState3, 2),
-      editor = _useState4[0],
-      setEditor = _useState4[1];
-
-  var _useState5 = useState(false),
-      _useState6 = _slicedToArray(_useState5, 2),
-      showEditModal = _useState6[0],
-      setShowEditModal = _useState6[1];
-
-  useEffect(function () {
-    doFetchList();
-  }, []);
-
-  var doFetchList = function doFetchList() {
-    ChUtils.request({
-      url: url,
-      data: query
-    }).then(function (res) {
-      if (res && res.status == 0 && res.list) {
-        setList(res.list);
-      }
-    });
-  };
+      showEditModal = _useState4[0],
+      setShowEditModal = _useState4[1];
 
   var doDeleteItem = function doDeleteItem(id) {
     ChUtils.request({
@@ -433,7 +603,7 @@ var index = (function (_ref) {
       }
     }).then(function (res) {
       if (res && res.status == 0) {
-        doFetchList();
+        reload();
       }
     });
   };
@@ -448,7 +618,7 @@ var index = (function (_ref) {
       data: item
     }).then(function (res) {
       if (res && res.status == 0) {
-        doFetchList();
+        reload();
         setShowEditModal(false);
         setEditor(null);
       }
@@ -462,7 +632,7 @@ var index = (function (_ref) {
       data: item
     }).then(function (res) {
       if (res && res.status == 0) {
-        doFetchList();
+        reload();
         setShowEditModal(false);
         setEditor(null);
       }
@@ -509,9 +679,18 @@ var index = (function (_ref) {
     rowKey: 'id',
     dataSource: list,
     columns: _columns,
-    expandable: expandable
+    expandable: expandable,
+    pagination: {
+      total: total,
+      defaultCurrent: 1,
+      pageSize: 10,
+      onChange: function onChange(page, pageSize) {
+        reload(page);
+      }
+    }
   }), React.createElement(Modal, {
-    title: "\u7F16\u8F91",
+    title: editor && editor.id ? "编辑" : "新增",
+    destroyOnClose: true,
     okText: "\u786E\u5B9A",
     cancelText: "\u53D6\u6D88",
     visible: showEditModal,

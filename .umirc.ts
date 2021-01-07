@@ -20,6 +20,5 @@ export default defineConfig({
     'transform-remove-strict-mode',
   ],
   theme: {
-    '@primary-color': '#ff6a00',
   },
 });

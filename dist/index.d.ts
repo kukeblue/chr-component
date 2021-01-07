@@ -5,5 +5,6 @@ import ChBlockSelector from './component/ChBlockSelector/blockSelector';
 import ChTablePanel from './component/ChTablePanel/index';
 import ChForm, { FormItemType } from './component/ChForm/index';
 import ChLayout from './component/ChLayout/index';
+import ChDropdown from './component/ChDropdown/index';
 import ChUtils from './ChUtils/index';
-export { ChSwiper, ChSwiperItem, ChMoveBook, ChBlockSelector, ChTablePanel, ChForm, ChLayout, FormItemType, ChUtils };
+export { ChSwiper, ChSwiperItem, ChMoveBook, ChBlockSelector, ChTablePanel, ChForm, ChLayout, ChUtils, ChDropdown, FormItemType, };

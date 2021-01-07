@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, Form, Select, Input, Upload, Radio, Popconfirm, Table, Modal, Layout } from 'antd';
+import { Button, Form, Select, Input, Upload, Radio, Popconfirm, Table, Modal, Layout, Dropdown, Menu } from 'antd';
 import axios from 'axios';
 import { useForm } from 'antd/lib/form/Form';
+import { DownOutlined } from '@ant-design/icons';
 
 var Swiper = (function (_ref) {
   var _ref$direction = _ref.direction,
@@ -770,4 +771,39 @@ var index$1 = (function (props) {
   }, props.header), React.createElement(Content, null, props.children))));
 });
 
-export { BlockSelector as ChBlockSelector, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils, FormItemType };
+var css$5 = ".action-arrow-down {\n  transform: scale(1.2, 0.8);\n  font-size: 12px;\n  margin: 0px 3px;\n  transition: transform 0.3s;\n}\n.action-arrow-down_active {\n  transform: scale(1.2, 0.8) rotate(0.5turn);\n}\n.ch-dropdown-content {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.chDropdown-demo {\n  background-color: rebeccapurple;\n}\n";
+styleInject(css$5);
+
+var index$2 = (function (props) {
+  var _useState = useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      dropdownVisible = _useState2[0],
+      setDropdownVisible = _useState2[1];
+
+  console.log(props.menuItems);
+  return React.createElement("div", null, React.createElement(Dropdown, {
+    trigger: props.trigger || ['hover'],
+    onVisibleChange: function onVisibleChange(value) {
+      setDropdownVisible(value);
+    },
+    placement: "bottomCenter",
+    overlay: React.createElement(Menu, null, props.menuItems && props.menuItems.map(function (item) {
+      return React.createElement(Menu.Item, {
+        className: props.itemClassName,
+        key: item.text
+      }, React.createElement("div", {
+        onClick: function onClick() {
+          if (!item.click || !item.click()) {
+            setDropdownVisible(false);
+          }
+        }
+      }, item.text));
+    }))
+  }, React.createElement("div", {
+    className: "ch-dropdown-content ".concat(props.className || '')
+  }, props.text || React.createElement("div", null, "\u4E0B\u62C9\u83DC\u5355"), React.createElement("div", {
+    className: dropdownVisible ? 'action-arrow-down action-arrow-down_active' : 'action-arrow-down'
+  }, React.createElement(DownOutlined, null)))));
+});
+
+export { BlockSelector as ChBlockSelector, index$2 as ChDropdown, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils, FormItemType };

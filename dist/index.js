@@ -9,6 +9,7 @@ var React__default = _interopDefault(React);
 var antd = require('antd');
 var axios = _interopDefault(require('axios'));
 var Form = require('antd/lib/form/Form');
+var icons = require('@ant-design/icons');
 
 var Swiper = (function (_ref) {
   var _ref$direction = _ref.direction,
@@ -776,7 +777,43 @@ var index$1 = (function (props) {
   }, props.header), React__default.createElement(Content, null, props.children))));
 });
 
+var css$5 = ".action-arrow-down {\n  transform: scale(1.2, 0.8);\n  font-size: 12px;\n  margin: 0px 3px;\n  transition: transform 0.3s;\n}\n.action-arrow-down_active {\n  transform: scale(1.2, 0.8) rotate(0.5turn);\n}\n.ch-dropdown-content {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.chDropdown-demo {\n  background-color: rebeccapurple;\n}\n";
+styleInject(css$5);
+
+var index$2 = (function (props) {
+  var _useState = React.useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      dropdownVisible = _useState2[0],
+      setDropdownVisible = _useState2[1];
+
+  console.log(props.menuItems);
+  return React__default.createElement("div", null, React__default.createElement(antd.Dropdown, {
+    trigger: props.trigger || ['hover'],
+    onVisibleChange: function onVisibleChange(value) {
+      setDropdownVisible(value);
+    },
+    placement: "bottomCenter",
+    overlay: React__default.createElement(antd.Menu, null, props.menuItems && props.menuItems.map(function (item) {
+      return React__default.createElement(antd.Menu.Item, {
+        className: props.itemClassName,
+        key: item.text
+      }, React__default.createElement("div", {
+        onClick: function onClick() {
+          if (!item.click || !item.click()) {
+            setDropdownVisible(false);
+          }
+        }
+      }, item.text));
+    }))
+  }, React__default.createElement("div", {
+    className: "ch-dropdown-content ".concat(props.className || '')
+  }, props.text || React__default.createElement("div", null, "\u4E0B\u62C9\u83DC\u5355"), React__default.createElement("div", {
+    className: dropdownVisible ? 'action-arrow-down action-arrow-down_active' : 'action-arrow-down'
+  }, React__default.createElement(icons.DownOutlined, null)))));
+});
+
 exports.ChBlockSelector = BlockSelector;
+exports.ChDropdown = index$2;
 exports.ChForm = ChForm;
 exports.ChLayout = index$1;
 exports.ChMoveBook = chMoveBook;

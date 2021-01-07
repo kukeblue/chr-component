@@ -81,7 +81,7 @@ export function useOptionFormListHook({
       if(res.status ==  0 && res.list) {
           let newOptions:Options[] = []
           res.list.forEach((item:any)=>{
-            options.push({
+            newOptions.push({
               label: item.name,
               value: item.id,
             })

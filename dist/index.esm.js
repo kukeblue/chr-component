@@ -461,7 +461,7 @@ function useOptionFormListHook(_ref3) {
       if (res.status == 0 && res.list) {
         var newOptions = [];
         res.list.forEach(function (item) {
-          options.push({
+          newOptions.push({
             label: item.name,
             value: item.id
           });

@@ -1,8 +1,8 @@
 ---
-title: ChBlockSelector(块状选择器)
+title:BlockSelector(块状选择器)
 ---
 
-## ChMoveBook
+## MoveBook
 
 ```jsx
 import React, { useState } from 'react';

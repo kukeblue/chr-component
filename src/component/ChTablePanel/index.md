@@ -1,8 +1,8 @@
 ---
-title: ChTablePanel(常规表格组件)
+title: TablePanel(常规表格组件)
 ---
 
-## ChTablePanel
+## TablePanel
 
 ```jsx
 import React from 'react';

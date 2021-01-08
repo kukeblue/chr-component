@@ -1,16 +1,16 @@
 ---
-title: MoveBook(流动书本动画)
+title: PriceSplit(金额小数点转换器)
 ---
 
-## MoveBook
+## PriceSplit
 
 ```jsx
 import React from 'react';
-import ChMoveBook from './chMoveBook';
+import PriceSplit from './index.tsx';
 import './index.less'
 
 export default () => { 
     return <div style={{width: '350px'}}>
-       <ChMoveBook/>
+        <PriceSplit value={12345}/>
     </div>;}
 ```

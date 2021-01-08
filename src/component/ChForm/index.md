@@ -1,8 +1,8 @@
 ---
-title: ChForm(表单渲染处理组件)
+title: Form(表单渲染处理组件)
 ---
 
-## ChForm
+## Form
 
 ```jsx
 import React from 'react';

@@ -1,8 +1,8 @@
 ---
-title: ChLayout(管理后台组件)
+title: Layout(管理后台组件)
 ---
 
-## ChLayout
+## Layout
 
 ```jsx
     import React from 'react';

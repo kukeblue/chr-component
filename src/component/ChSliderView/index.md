@@ -1,8 +1,8 @@
 ---
-title: ChSliderRow(滑块组件)
+title: SliderRow(滑块组件)
 ---
 
-## ChSliderRow
+## SliderRow
 
 ```jsx
 import React from 'react';

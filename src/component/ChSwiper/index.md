@@ -2,7 +2,7 @@
 title: Swiper(轮播组件)
 ---
 
-## ChSwiper
+## Swiper
 
 ```jsx
 import React from 'react';

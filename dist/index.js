@@ -812,11 +812,31 @@ var index$2 = (function (props) {
   }, React__default.createElement(icons.DownOutlined, null)))));
 });
 
+var css$6 = ".ch-sortor {\n  width: 14px;\n  line-height: 12px;\n}\n.ch-sortor-up {\n  line-height: 12px;\n  position: relative;\n  top: 3px;\n}\n.ch-sortor-down {\n  line-height: 12px;\n  position: relative;\n  top: -3px;\n}\n";
+styleInject(css$6);
+
+var index$3 = (function (props) {
+  return React__default.createElement("div", {
+    className: 'ch-sortor ' + (props.className || '')
+  }, React__default.createElement("div", {
+    style: props.value == 'up' ? {
+      color: props.color || '#000'
+    } : {},
+    className: 'ch-sortor-up'
+  }, React__default.createElement(icons.CaretUpOutlined, null)), React__default.createElement("div", {
+    style: props.value == 'down' ? {
+      color: props.color || '#000'
+    } : {},
+    className: 'ch-sortor-down'
+  }, React__default.createElement(icons.CaretDownOutlined, null)));
+});
+
 exports.ChBlockSelector = BlockSelector;
 exports.ChDropdown = index$2;
 exports.ChForm = ChForm;
 exports.ChLayout = index$1;
 exports.ChMoveBook = chMoveBook;
+exports.ChSortor = index$3;
 exports.ChSwiper = Swiper;
 exports.ChSwiperItem = swiperItem;
 exports.ChTablePanel = index;

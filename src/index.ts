@@ -7,6 +7,7 @@ import ChTablePanel from './component/ChTablePanel/index'
 import ChForm, { FormItemType } from './component/ChForm/index'
 import ChLayout from './component/ChLayout/index'
 import ChDropdown from './component/ChDropdown/index'
+import ChSortor from './component/ChSortor/index'
 import ChUtils from './ChUtils/index'
 
 export {
@@ -19,5 +20,6 @@ export {
     ChLayout,
     ChUtils,
     ChDropdown,
+    ChSortor,
     FormItemType, 
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Button, Form, Select, Input, Upload, Radio, Popconfirm, Table, Modal, Layout, Dropdown, Menu } from 'antd';
 import axios from 'axios';
 import { useForm } from 'antd/lib/form/Form';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 
 var Swiper = (function (_ref) {
   var _ref$direction = _ref.direction,
@@ -806,4 +806,23 @@ var index$2 = (function (props) {
   }, React.createElement(DownOutlined, null)))));
 });
 
-export { BlockSelector as ChBlockSelector, index$2 as ChDropdown, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils, FormItemType };
+var css$6 = ".ch-sortor {\n  width: 14px;\n  line-height: 12px;\n}\n.ch-sortor-up {\n  line-height: 12px;\n  position: relative;\n  top: 3px;\n}\n.ch-sortor-down {\n  line-height: 12px;\n  position: relative;\n  top: -3px;\n}\n";
+styleInject(css$6);
+
+var index$3 = (function (props) {
+  return React.createElement("div", {
+    className: 'ch-sortor ' + (props.className || '')
+  }, React.createElement("div", {
+    style: props.value == 'up' ? {
+      color: props.color || '#000'
+    } : {},
+    className: 'ch-sortor-up'
+  }, React.createElement(CaretUpOutlined, null)), React.createElement("div", {
+    style: props.value == 'down' ? {
+      color: props.color || '#000'
+    } : {},
+    className: 'ch-sortor-down'
+  }, React.createElement(CaretDownOutlined, null)));
+});
+
+export { BlockSelector as ChBlockSelector, index$2 as ChDropdown, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, index$3 as ChSortor, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils, FormItemType };

@@ -1,8 +1,8 @@
 ---
-title: ChDropdown(下拉按钮动画版本)
+title: Dropdown(下拉按钮动画版本)
 ---
 
-## ChDropdown
+## Dropdown
 
 ```jsx
 import React from 'react';

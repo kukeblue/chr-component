@@ -7,7 +7,7 @@ var transition = '';
 export default ({ 
 	actionNode,   
 	children,
- }) => {
+ }: any) => {
 
 	const [ sliderStartX, setSliderStartX ] = useState(0)
 	const [ sliderCurrX, setSliderCurrX ] = useState(0)
@@ -19,14 +19,14 @@ export default ({
 		setActionAreaWith(document.getElementsByClassName('ch-slider-action-wrap')[0].clientWidth)
 	}, [])
 
-	const startSlide = (e) => {
+	const startSlide = (e:any) => {
 		e.stopPropagation();
 		console.log('拖动开始');
 		transition = '';
 		setSliderStartX(e.changedTouches[0].pageX)
 	}
 
-	const moveSlide = (e) => {
+	const moveSlide = (e:any) => {
 		e.stopPropagation();
 		let currX = e.changedTouches[0].pageX - sliderStartX + sliderOffsetX
 		if(currX < -100) {
@@ -39,7 +39,7 @@ export default ({
 		console.log('SliderCurrX', sliderCurrX)
 	}
 
-	const endSlide = (e) => {
+	const endSlide = (e:any) => {
 		e.stopPropagation();
 		transition = 'transform 300ms ease';
 		if(sliderCurrX > 0) {

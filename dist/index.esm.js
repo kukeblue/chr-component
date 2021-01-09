@@ -825,4 +825,31 @@ var index$3 = (function (props) {
   }, React.createElement(CaretDownOutlined, null)));
 });
 
-export { BlockSelector as ChBlockSelector, index$2 as ChDropdown, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, index$3 as ChSortor, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils, FormItemType };
+var css$7 = "";
+styleInject(css$7);
+
+var splitK = function splitK(num) {
+  var decimal = String(num).split('.')[1] || ''; //小数部分
+
+  var tempArr = [];
+  var revNumArr = String(num).split('.')[0].split("").reverse(); //倒序
+
+  for (var i in revNumArr) {
+    tempArr.push(revNumArr[i]);
+
+    if ((Number(i) + 1) % 3 === 0 && Number(i) != revNumArr.length - 1) {
+      tempArr.push(',');
+    }
+  }
+
+  var zs = tempArr.reverse().join(''); //整数部分
+
+  return decimal ? zs + '.' + decimal : zs;
+};
+
+var index$4 = (function (_ref) {
+  var value = _ref.value;
+  return React.createElement("span", null, splitK(value || 0));
+});
+
+export { BlockSelector as ChBlockSelector, index$2 as ChDropdown, ChForm, index$1 as ChLayout, chMoveBook as ChMoveBook, index$4 as ChPriceSplit, index$3 as ChSortor, Swiper as ChSwiper, swiperItem as ChSwiperItem, index as ChTablePanel, ChUtils, FormItemType };

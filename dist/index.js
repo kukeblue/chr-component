@@ -831,11 +831,39 @@ var index$3 = (function (props) {
   }, React__default.createElement(icons.CaretDownOutlined, null)));
 });
 
+var css$7 = "";
+styleInject(css$7);
+
+var splitK = function splitK(num) {
+  var decimal = String(num).split('.')[1] || ''; //小数部分
+
+  var tempArr = [];
+  var revNumArr = String(num).split('.')[0].split("").reverse(); //倒序
+
+  for (var i in revNumArr) {
+    tempArr.push(revNumArr[i]);
+
+    if ((Number(i) + 1) % 3 === 0 && Number(i) != revNumArr.length - 1) {
+      tempArr.push(',');
+    }
+  }
+
+  var zs = tempArr.reverse().join(''); //整数部分
+
+  return decimal ? zs + '.' + decimal : zs;
+};
+
+var index$4 = (function (_ref) {
+  var value = _ref.value;
+  return React__default.createElement("span", null, splitK(value || 0));
+});
+
 exports.ChBlockSelector = BlockSelector;
 exports.ChDropdown = index$2;
 exports.ChForm = ChForm;
 exports.ChLayout = index$1;
 exports.ChMoveBook = chMoveBook;
+exports.ChPriceSplit = index$4;
 exports.ChSortor = index$3;
 exports.ChSwiper = Swiper;
 exports.ChSwiperItem = swiperItem;

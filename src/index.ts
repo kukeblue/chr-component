@@ -8,7 +8,9 @@ import ChForm, { FormItemType } from './component/ChForm/index'
 import ChLayout from './component/ChLayout/index'
 import ChDropdown from './component/ChDropdown/index'
 import ChSortor from './component/ChSortor/index'
+import ChPriceSplit from './component/Format/PriceSplit/index'
 import ChUtils from './ChUtils/index'
+
 
 export {
     ChSwiper,
@@ -21,5 +23,6 @@ export {
     ChUtils,
     ChDropdown,
     ChSortor,
+    ChPriceSplit,
     FormItemType, 
 }

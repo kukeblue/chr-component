@@ -13,9 +13,6 @@ export default defineConfig({
   styles: [
     // 'https://unpkg.com/swiper/css/swiper.min.css'
   ],
-  sass: {
-    implementation: require('node-sass')
-  },
   extraBabelPlugins: [
     'transform-remove-strict-mode',
   ],

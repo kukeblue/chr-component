@@ -211,12 +211,5 @@ export interface IConfigFromPlugins {
   request?: {
     dataField?: "";
   };
-  sass?: {
-    implementation?: any;
-    sassOptions?: {};
-    prependData?: string | (() => any);
-    sourceMap?: boolean;
-    webpackImporter?: boolean;
-  };
   [k: string]: any;
 }

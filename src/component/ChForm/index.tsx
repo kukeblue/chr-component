@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox, Radio, Select, Upload } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm'
+import { UploadOutlined } from '@ant-design/icons';
 import './index.less'
 const { Option } = Select;
 export enum FormItemType  {
@@ -55,7 +56,6 @@ export default ({
    // @type JSX Function | @dec 渲染单个formItem
    const renderFormItem  = (item: FormDataItem) => {
       let dom
-      console.log('debug: item.type', item.type)
       switch(item.type) {
       case 'input':
          dom = <Input />
@@ -75,8 +75,8 @@ export default ({
          </Select>
          break
       case 'upload':
-         dom = <Upload multiple name="file" action={item.uploadUrl ? item.uploadUrl : "/fileUpload"} listType={item.uploadType}>
-            <Button>Click to upload</Button>
+         dom = <Upload  multiple name="file" action={item.uploadUrl ? item.uploadUrl : "/fileUpload"} listType={item.uploadType}>
+            <Button icon={<UploadOutlined/>}>点击文件</Button>
          </Upload>
       break
       default:
@@ -89,7 +89,6 @@ export default ({
       if(item.type == 'upload') {
          item.valuePropName = "fileList";
          item.getValueFromEvent = (e: any) => {
-            console.log('Upload event:', e);
             if (Array.isArray(e)) {
               return e[e.length-1];
             }

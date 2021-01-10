@@ -52,10 +52,16 @@ export default () => {
                   type: 'upload',
                   label: '上传接口',
                   name: 'file',
-                  rules: [{ required: true, message: '上传接口', validator: 
+                  rules: [{ required: true, message: '文件上传失败', validator: 
                     (rule, value, callback) => {
                         try {
-                            throw new Error('Something wrong!');
+                            if(value[0].response)  {
+                               if(value[0].response.status == 0) {
+                                 console.log('debug: 单文件上传成功！')
+                               }else {
+                                 callback('文件上传失败！');
+                               }
+                            }
                         } catch (err) {
                             callback(err);
                         }

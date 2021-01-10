@@ -30,7 +30,8 @@ export interface FormDataItem {
    initialValue?: any,
    valuePropName?: string,
    getValueFromEvent?: (e:any)=>any,
-   uploadUrl?:string
+   uploadUrl?:string,
+   uploadType?: "picture" | "text" | "picture-card" | undefined
 }
 interface ChFormProps  {
    formData: FormDataItem[]
@@ -74,7 +75,7 @@ export default ({
          </Select>
          break
       case 'upload':
-         dom = <Upload name="file" action={item.uploadUrl ? item.uploadUrl : "/fileUpload"} listType="picture">
+         dom = <Upload multiple name="file" action={item.uploadUrl ? item.uploadUrl : "/fileUpload"} listType={item.uploadType}>
             <Button>Click to upload</Button>
          </Upload>
       break
@@ -90,9 +91,9 @@ export default ({
          item.getValueFromEvent = (e: any) => {
             console.log('Upload event:', e);
             if (Array.isArray(e)) {
-              return e;
+              return e[e.length-1];
             }
-            return e && e.fileList;
+            return e && [e.fileList[e.fileList.length-1]];
          };
       }
       return item;

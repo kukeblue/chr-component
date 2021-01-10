@@ -140,6 +140,7 @@ export default ({
         visible={showEditModal} 
         onOk={()=>{
             form.validateFields().then(values=>{
+                console.log('提交编辑', values)
                 if(!editor.id) {
                     doAddItem(values)
                 }else {

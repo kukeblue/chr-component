@@ -41,12 +41,26 @@ export default () => {
             urlUpdate='http://localhost:8000/api/grade/edit'
             url='http://api-paper.kukechen.top/api/grade/page'
             columns={columns}
-            formData={
-                [{
+            formData={[
+                {
                   type: 'input',
                   label: '名称',
                   name: 'name',
                   rules: [{ required: true, message: '请输入年级名称' }],
+               },
+               {
+                  type: 'upload',
+                  label: '上传接口',
+                  name: 'file',
+                  rules: [{ required: true, message: '上传接口', validator: 
+                    (rule, value, callback) => {
+                        try {
+                            throw new Error('Something wrong!');
+                        } catch (err) {
+                            callback(err);
+                        }
+                    }
+                  }],
                }]
             }
             expandable={{

@@ -11,6 +11,7 @@ export enum FormItemType  {
       upload = 'upload'
 }
 interface FormItemRule  {
+      validator?:  (rule:any, value:any, callback: (v:any)=>void)=>void
       required: boolean,
       message: string,
 }

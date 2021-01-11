@@ -65,7 +65,7 @@ export interface IConfigFromPlugins {
     mode?: "emit" | "verify";
   };
   cssnano?: {};
-  copy?: string[];
+  copy?: any[];
   define?: {};
   devScripts?: {};
   /**
@@ -107,6 +107,7 @@ export interface IConfigFromPlugins {
     extraRoutePaths?: () => any;
   };
   externals?: {} | string | (() => any);
+  extraBabelIncludes?: any[];
   extraBabelPlugins?: any[];
   extraBabelPresets?: any[];
   extraPostCSSPlugins?: any[];
@@ -122,6 +123,7 @@ export interface IConfigFromPlugins {
     logger?: {};
     [k: string]: any;
   };
+  fastRefresh?: {};
   hash?: boolean;
   ignoreMomentLocale?: boolean;
   inlineLimit?: number;
@@ -147,9 +149,13 @@ export interface IConfigFromPlugins {
   runtimePublicPath?: boolean;
   ssr?: {
     /**
-     * remove window.g_initialProps in html, to force execing Page getInitialProps  functions
+     * force execing Page getInitialProps functions
      */
     forceInitial?: boolean;
+    /**
+     * remove window.g_initialProps in html
+     */
+    removeWindowInitialProps?: boolean;
     /**
      * disable serve-side render in umi dev mode.
      */
@@ -176,17 +182,22 @@ export interface IConfigFromPlugins {
   mock?: {
     exclude?: string[];
   };
+  themeConfig?: {};
+  logo?: string | boolean;
+  mode?: any;
   description?: string;
-  logo?: string;
-  locales?: any[];
-  mode?: string;
+  locales?: string[][];
+  resolve?: {};
   menus?: {};
   navs?: any[] | {};
-  resolve?: {};
   algolia?: {
     apiKey?: string;
     indexName?: string;
     debug?: boolean;
+  };
+  sitemap?: {
+    hostname?: string;
+    excludes?: string[];
   };
   antd?: {
     dark?: boolean;
@@ -194,10 +205,11 @@ export interface IConfigFromPlugins {
     config?: {};
   };
   dva?: {
-    immer?: boolean;
-    hmr?: boolean;
-    skipModelValidate?: boolean;
+    disableModelsReExport?: boolean;
     extraModels?: string[];
+    hmr?: boolean;
+    immer?: boolean;
+    skipModelValidate?: boolean;
   };
   locale?: {
     default?: string;

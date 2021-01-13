@@ -8,7 +8,7 @@ import { FormDataItem } from '../ChForm/index';
 
 type ChResponse<T> = any
 
-// 表格Props
+// 表格Propsyar
 interface TablePanelProps {
     columns: Column[],
     url: string,
@@ -19,7 +19,7 @@ interface TablePanelProps {
     expandable?: {
         expandedRowRender: (item: Item) => React.ReactElement,
     },
-    onAddBefore?: (item: Item) => void,
+    onEditBefore?: (item: Item)=>void,
     query?: Object,
 }
 // 表格Item
@@ -31,6 +31,9 @@ type Column = {
     key: string,
     render?: (text: any, ob: { id: string }) => JSX.Element
 }
+
+
+
 export default ({
     columns,
     url,
@@ -40,8 +43,8 @@ export default ({
     formData,
     expandable,
     query,
-    onAddBefore,
-}: TablePanelProps) => {
+    onEditBefore,
+    }: TablePanelProps) => {
     const {
         list,
         reload,
@@ -53,11 +56,8 @@ export default ({
     })
 
     const [form] = useForm()
-    const [editor, setEditor] = useState<Item>()
+    const [editor, setEditor] = useState<any>()
     const [showEditModal, setShowEditModal] = useState(false)
-
-
-
 
     const doDeleteItem = (id: string) => {
         ChUtils.Ajax.request({ url: urlDelete, data: { id } }).then((res: ChResponse<Item>) => {
@@ -67,9 +67,9 @@ export default ({
         })
     }
     const doAddItem = (item: Item) => {
-        if (!onAddBefore) {
-        } else {
-            onAddBefore(item)
+        if(!onEditBefore) {
+        }else {
+            onEditBefore(item)
         }
         ChUtils.Ajax.request({ url: urlAdd, data: item }).then((res: ChResponse<Item>) => {
             if (res && res.status == 0) {
@@ -81,8 +81,12 @@ export default ({
     }
     const doEditItem = (item: Item) => {
         item.id = editor.id
-        ChUtils.Ajax.request({ url: urlUpdate, data: item }).then((res: ChResponse<Item>) => {
-            if (res && res.status == 0) {
+        if(!onEditBefore) {
+        }else {
+            onEditBefore(item)
+        }
+        ChUtils.Ajax.request({url:urlUpdate, data: item}).then((res: ChResponse<Item>) =>{
+            if(res && res.status == 0) {
                 reload();
                 setShowEditModal(false)
                 setEditor(null);
@@ -118,9 +122,9 @@ export default ({
     return <div className='ch-tablePanel'>
         <Button style={{
             marginBottom: '10px'
-        }} onClick={() => {
-            setEditor({})
-            setShowEditModal(true)
+        }} onClick={()=>{
+                setEditor({})
+                setShowEditModal(true)
         }} type='primary'>添加</Button>
         <Table
             rowKey='id'

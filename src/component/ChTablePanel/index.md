@@ -67,7 +67,12 @@ export default () => {
                         }
                     }
                   }],
-               }]
+               },{
+                  type: 'mutipleSelect',
+                  label: '名称',
+                  name: 'name',
+                  rules: [{ required: true, message: '请输入年级名称' }],
+               },]
             }
             expandable={{
                 expandedRowRender: record => <div>

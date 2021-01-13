@@ -130,7 +130,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "src/component/ChForm/index.md",
-          "updatedTime": 1610093051000,
+          "updatedTime": 1610336927000,
           "componentName": "ChForm",
           "title": "Form(表单渲染处理组件)",
           "slugs": [
@@ -245,6 +245,7 @@ export function getRoutes() {
         "meta": {
           "filePath": "src/component/ChTablePanel/index.md",
           "updatedTime": 1610267336000,
+          "componentName": "ChTablePanel",
           "title": "TablePanel(常规表格组件)",
           "slugs": [
             {

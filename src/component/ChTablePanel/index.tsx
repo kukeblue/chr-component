@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm, Button, Modal} from 'antd'
+import { Table, Popconfirm, Button, Modal } from 'antd'
 import ChUtils from '../../ChUtils'
 import ChForm from '../ChForm/index'
 import './index.less'
@@ -17,9 +17,9 @@ interface TablePanelProps {
     urlUpdate: string,
     formData: FormDataItem[]
     expandable?: {
-        expandedRowRender: (item:Item) => React.ReactElement,
+        expandedRowRender: (item: Item) => React.ReactElement,
     },
-    onAddBefore?: (item: Item)=>void,
+    onAddBefore?: (item: Item) => void,
     query?: Object,
 }
 // 表格Item
@@ -29,7 +29,7 @@ type Column = {
     title: string,
     dataIndex: string,
     key: string,
-    render?: (text:any, ob: {id: string})=>JSX.Element
+    render?: (text: any, ob: { id: string }) => JSX.Element
 }
 export default ({
     columns,
@@ -43,33 +43,36 @@ export default ({
     onAddBefore,
 }: TablePanelProps) => {
     const {
-        list, 
-        reload, 
+        list,
+        reload,
         total,
     } = ChUtils.chHooks.usePage({
-        url: url, 
-        pageSize: 10, 
-        query: {}, 
+        url: url,
+        pageSize: 10,
+        query: {},
     })
+
     const [form] = useForm()
     const [editor, setEditor] = useState<Item>()
     const [showEditModal, setShowEditModal] = useState(false)
 
-   
+
+
+
     const doDeleteItem = (id: string) => {
-        ChUtils.Ajax.request({url:urlDelete, data: {id}}).then((res: ChResponse<Item>) =>{
-            if(res && res.status == 0) {
+        ChUtils.Ajax.request({ url: urlDelete, data: { id } }).then((res: ChResponse<Item>) => {
+            if (res && res.status == 0) {
                 reload();
             }
         })
     }
     const doAddItem = (item: Item) => {
-        if(!onAddBefore) {
-        }else {
+        if (!onAddBefore) {
+        } else {
             onAddBefore(item)
         }
-        ChUtils.Ajax.request({url:urlAdd, data: item}).then((res: ChResponse<Item>) =>{
-            if(res && res.status == 0) {
+        ChUtils.Ajax.request({ url: urlAdd, data: item }).then((res: ChResponse<Item>) => {
+            if (res && res.status == 0) {
                 reload();
                 setShowEditModal(false)
                 setEditor(null);
@@ -78,82 +81,82 @@ export default ({
     }
     const doEditItem = (item: Item) => {
         item.id = editor.id
-        ChUtils.Ajax.request({url:urlUpdate, data: item}).then((res: ChResponse<Item>) =>{
-            if(res && res.status == 0) {
+        ChUtils.Ajax.request({ url: urlUpdate, data: item }).then((res: ChResponse<Item>) => {
+            if (res && res.status == 0) {
                 reload();
                 setShowEditModal(false)
                 setEditor(null);
             }
         })
     }
-    
+
     const _columns = columns.concat([{
         title: '',
         dataIndex: 'option',
         key: 'option',
-        render: (_, item: {id: string})=>{
-          return <div>
-              <Popconfirm
-                  title="您确定删除此项?"
-                  onConfirm={()=>{
-                    doDeleteItem(item.id)
-                  }}
-                  okText="Yes"
-                  cancelText="No"
-              >
-                  <Button type='link'>删除</Button> 
-              </Popconfirm>
-              <Button onClick={()=>{
-                  setEditor(item);
-                  form.setFieldsValue(item)
-                  setShowEditModal(true);
-                //   setShowGradeModal(true)
-              }} type='link'>编辑</Button> 
-          </div>
+        render: (_, item: { id: string }) => {
+            return <div>
+                <Popconfirm
+                    title="您确定删除此项?"
+                    onConfirm={() => {
+                        doDeleteItem(item.id)
+                    }}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Button type='link'>删除</Button>
+                </Popconfirm>
+                <Button onClick={() => {
+                    setEditor(item);
+                    form.setFieldsValue(item)
+                    setShowEditModal(true);
+                    //   setShowGradeModal(true)
+                }} type='link'>编辑</Button>
+            </div>
         }
-      }])
+    }])
     return <div className='ch-tablePanel'>
-    <Button style={{
-        marginBottom: '10px'
-    }} onClick={()=>{
+        <Button style={{
+            marginBottom: '10px'
+        }} onClick={() => {
             setEditor({})
             setShowEditModal(true)
         }} type='primary'>添加</Button>
-       <Table 
-        rowKey='id' 
-        dataSource={list} 
-        columns={_columns}
-        expandable={expandable}
-        pagination={{
-            total: total,
-            defaultCurrent:1,
-            pageSize: 10,
-            onChange: (page, pageSize)=>{
-                reload(page)
-            }
-        }}
-    />
-    <Modal title={editor && editor.id ? "编辑" : "新增"}
-        destroyOnClose
-        okText="确定"
-        cancelText="取消"
-        visible={showEditModal} 
-        onOk={()=>{
-            form.validateFields().then(values=>{
-                console.log('提交编辑', values)
-                if(!editor.id) {
-                    doAddItem(values)
-                }else {
-                    doEditItem(values)
+        <Table
+            rowKey='id'
+            dataSource={list}
+            columns={_columns}
+            expandable={expandable}
+            pagination={{
+                total: total,
+                defaultCurrent: 1,
+                pageSize: 10,
+                onChange: (page, pageSize) => {
+                    reload(page)
                 }
-            })
-        }} 
-        onCancel={()=>setShowEditModal(false)}>
-        <ChForm 
-            form={form}
-            formData = {formData}
-            onFinish={(values)=>{
-        }}/>
-    </Modal>
+            }}
+        />
+        <Modal title={editor && editor.id ? "编辑" : "新增"}
+            destroyOnClose
+            okText="确定"
+            cancelText="取消"
+            visible={showEditModal}
+            onOk={() => {
+                form.validateFields().then(values => {
+                    console.log('提交编辑', values)
+                    if (!editor.id) {
+                        doAddItem(values)
+                    } else {
+                        doEditItem(values)
+                    }
+                })
+            }}
+            onCancel={() => setShowEditModal(false)}>
+            <ChForm
+                form={form}
+                formData={formData}
+                onFinish={(values) => {
+                }} />
+        </Modal>
     </div>
 };

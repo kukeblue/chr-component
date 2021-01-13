@@ -98,7 +98,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "src/component/ChForm/index.md",
-          "updatedTime": 1610093051000,
+          "updatedTime": 1610336927000,
           "title": "Form(表单渲染处理组件)",
           "slugs": [
             {

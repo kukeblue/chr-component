@@ -29,7 +29,7 @@ type Column = {
     title: string,
     dataIndex: string,
     key: string,
-    render?: (text: any, ob: { id: string }) => JSX.Element
+    render?: (text: string, ob: any) => JSX.Element
 }
 
 

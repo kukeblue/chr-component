@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { getObCache, setObCache } from "./cache";
 import Ajax, { ChCommonResponse } from './request'
 
 //@type Hook Function 分页Hoos,TS版本
@@ -65,7 +66,7 @@ export function usePage(props: usePageProps) {
 
 interface useOptionFormListHookProps {
   url: string,
-  query: Object
+  query?: Object
 }
 
 interface Options {
@@ -73,30 +74,45 @@ interface Options {
   value: string,
 }
 
-export function useOptionFormListHook({
-  url, query
-}: useOptionFormListHookProps) {
+export function useOptionFormListHook(props: useOptionFormListHookProps) {
+  const  {
+    url, query=''
+  } = props;
   const [list, setList] = useState([]);
+  const [optionsMap, setOptionsMap] = useState<any>({});
   const [options, setOptions] = useState<Options[]>([]);
-
-
   useEffect(() => {
-    Ajax.request({ url, data: { query } }).then((res: any) => {
-      if (res.status == 0 && res.list) {
-        let newOptions: Options[] = []
-        res.list.forEach((item: any) => {
-          newOptions.push({
-            label: item.name,
-            value: item.id,
-          })
-        })
-        setList(res.list)
-        setOptions(newOptions);
-      }
-    })
+    let cacheKey = url + query.toString()
+    let res = getObCache(cacheKey)
+    if(res) {
+      refresh(res) 
+    }else {
+      Ajax.request({ url, data: { query } }).then((res: any) => {
+        if (res.status == 0 && res.list) {
+          setObCache(cacheKey, res, 60)
+          refresh(res)       
+        }
+      })
+    }
   }, [])
+
+  const refresh = (res: any) => {
+    let newOptions: Options[] = []
+    let newOptionsMap: any = {}
+    res.list.forEach((item: any) => {
+      newOptionsMap[item.id] = item
+      newOptions.push({
+        label: item.name,
+        value: item.id,
+      })
+    })
+    setList(res.list)
+    setOptionsMap(newOptionsMap)
+    setOptions(newOptions);
+  }
   return {
     list,
+    optionsMap,
     options
   }
 }

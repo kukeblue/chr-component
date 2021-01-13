@@ -98,7 +98,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "src/component/ChForm/index.md",
-          "updatedTime": 1610336927000,
+          "updatedTime": 1610550405000,
           "slugs": [],
           "title": "Index",
           "group": {

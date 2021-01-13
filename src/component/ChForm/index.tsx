@@ -82,9 +82,10 @@ export default ({
          case 'mutipleSelect':
             dom = <Select
                mode="multiple"
-               style={{ width: 400 }}
-               defaultValue={[]} onChange={() => { }}>
-               { }
+               >
+              {item.options?.map(item => {
+                  return <Option key={item.value} value={item.value}>{item.label}</Option>
+               })}
             </Select>
             break
          default:

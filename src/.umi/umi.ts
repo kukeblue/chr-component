@@ -4,8 +4,8 @@ import '@@/core/devScripts';
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
 import { createHistory } from './core/history';
-import { ApplyPluginsType } from 'D:/project/chr-component/node_modules/@umijs/runtime';
-import { renderClient } from 'D:/project/chr-component/node_modules/@umijs/renderer-react/dist/index.js';
+import { ApplyPluginsType } from '/Users/huanchen/Project/out/chr-component/node_modules/@umijs/preset-built-in/node_modules/@umijs/runtime';
+import { renderClient } from '/Users/huanchen/Project/out/chr-component/node_modules/@umijs/renderer-react/dist/index.js';
 import { getRoutes } from './core/routes';
 
 
@@ -37,7 +37,7 @@ export default clientRender();
 
 
     window.g_umi = {
-      version: '3.3.4',
+      version: '3.2.20',
     };
   
 

@@ -12,7 +12,8 @@ interface usePageProps {
 
 export function usePage(props: usePageProps) {
 
-  const { url, pageSize, query, onReloadAfter } = props;
+  const { url, pageSize, onReloadAfter } = props;
+  const [query, setQuery] = useState<any>(props.query);
   const [status, setStatus] = useState<string>('more');
   const [total, setTotal] = useState<number>(0);
   const [list, setList] = useState([]);
@@ -21,7 +22,7 @@ export function usePage(props: usePageProps) {
 
   useEffect(() => {
     reload()
-  }, [])
+  }, [query])
 
   const reload = async (pageNo?: number) => {
     setStatus('loading');
@@ -35,7 +36,7 @@ export function usePage(props: usePageProps) {
         pageSize: pz
       }
     });
-    console.log('分页PAGE获取成功', resp)
+    console.log('分页PAGE获取成功',query, resp)
     if (resp.status === 0) {
       setTotal(resp.page.total);
       let newList
@@ -60,7 +61,7 @@ export function usePage(props: usePageProps) {
     if (status === 'noMore') return;
     await reload(ref.current.pageNo);
   }
-  return { list, setList, status, setStatus, reload, loadMore, total };
+  return { list, setList, status, setStatus, reload, loadMore, total, setQuery };
 }
 
 

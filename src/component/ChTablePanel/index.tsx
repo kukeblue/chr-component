@@ -5,7 +5,7 @@ import ChForm from '../ChForm/index'
 import './index.less'
 import { useForm } from 'antd/lib/form/Form';
 import { FormDataItem } from '../ChForm/index';
-
+import { FormItemType } from '../ChForm/index'
 type ChResponse<T> = any
 
 // 表格Propsyar
@@ -16,6 +16,7 @@ interface TablePanelProps {
     urlAdd: string,
     urlUpdate: string,
     formData: FormDataItem[]
+    searchFormData?: FormDataItem[],
     expandable?: {
         expandedRowRender: (item: Item) => React.ReactElement,
     },
@@ -42,19 +43,22 @@ export default ({
     urlDelete,
     urlUpdate,
     formData,
+    searchFormData,
     expandable,
     query,
     onEditBefore,
     onEditFormat,
     }: TablePanelProps) => {
+
     const {
         list,
         reload,
         total,
+        setQuery,
     } = ChUtils.chHooks.usePage({
         url: url,
         pageSize: 10,
-        query: {},
+        query: query || {},
     })
 
     const [form] = useForm()
@@ -124,6 +128,23 @@ export default ({
         }
     }])
     return <div className='ch-tablePanel'>
+        {<ChForm
+            submitname="搜索"
+            layout={{}}
+            formData={[
+                {
+                    layout: {span: 6},
+                    type: FormItemType.input,
+                    label: '名称',
+                    name: 'name',
+                    rules: [
+                    //   { required: true, message: '请输入名称' }
+                    ],
+                }
+            ]}
+            onFinish={(values) => {
+                setQuery(Object.assign(query, values))
+            }} />}
         <Button style={{
             marginBottom: '10px'
         }} onClick={()=>{

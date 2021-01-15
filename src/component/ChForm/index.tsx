@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Radio, Select, Upload } from 'antd';
+import { Form, Input, Button, Checkbox, Radio, Select, Upload, Row, Col } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm'
 import { UploadOutlined } from '@ant-design/icons';
 import './index.less'
@@ -36,22 +36,33 @@ export interface FormDataItem {
    getValueFromEvent?: (e: any) => any,
    uploadurl?: string,
    uploadType?: "picture" | "text" | "picture-card" | undefined,
-   uploadname?: string
+   uploadname?: string,
+   layout?: {
+      span?: number,
+      offset?: number,
+   }
 }
 interface ChFormProps {
+   submitname?: string,
    formData: FormDataItem[]
    onFinish?: (values: any) => void,
    form?: FormInstance<any>
    editor?: any
+   layout?: {
+      labelCol?: { span?: number, offset?: number },
+      wrapperCol?: { span?: number, offset?: number },
+   }
 }
 
 export default ({
    formData,
    onFinish,
    form,
-   editor
+   editor,
+   layout,
+   submitname
 }: ChFormProps) => {
-   const layout = {
+   const _layout = layout || {
       labelCol: { span: 24 },
       wrapperCol: { span: 24 },
    };
@@ -113,22 +124,32 @@ export default ({
       <Form
          preserve={false}
          form={form}
-         {...layout}
+         {..._layout}
          onFinish={onFinish}
       >
+         <Row>
          {
-            formData && formData.map(item => {
+            formData && formData.map((item, index) => {
+               let layout = item.layout || {span: 24};
                let formItemProps = buildFormItemProps(item);
                if(item.itemshow && !item.itemshow(editor, form)) {
                   return 
                }
-               return <Form.Item
+               return <Col key={formItemProps.key || index} {...layout}><Form.Item
                   {...formItemProps}
                >
                   {renderFormItem(item)}
-               </Form.Item>
+               </Form.Item></Col>
             })
          }
+            <Col style={{marginLeft: 10}}>
+               {!form && <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                     {submitname || '确定'}
+                  </Button>
+                  </Form.Item>}
+            </Col>
+         </Row>
       </Form>
    </div>
 };

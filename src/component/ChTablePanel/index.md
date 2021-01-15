@@ -8,8 +8,8 @@ title: TablePanel(常规表格组件)
 import React from 'react';
 import ChTablePanel from './index.tsx';
 import './index.less';
-import { useOptionFormListHook } from '../../ChUtils/ChHooks'
-
+import { useOptionFormListHook } from '../../ChUtils/chHooks'
+import { FormItemType } from '../ChForm/index.tsx'
 
 export default () => { 
 
@@ -41,6 +41,17 @@ export default () => {
             urlUpdate='http://localhost:8000/api/grade/edit'
             url='http://api-paper.kukechen.top/api/grade/page'
             columns={columns}
+            searchFormData={[
+                {
+                    layout: {span: 6},
+                    type: FormItemType.input,
+                    label: '名称',
+                    name: 'name',
+                    rules: [
+                    //   { required: true, message: '请输入名称' }
+                    ],
+                }
+            ]}
             formData={[
                 {
                   type: 'input',

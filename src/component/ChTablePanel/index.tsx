@@ -5,7 +5,6 @@ import ChForm from '../ChForm/index'
 import './index.less'
 import { useForm } from 'antd/lib/form/Form';
 import { FormDataItem } from '../ChForm/index';
-import { FormItemType } from '../ChForm/index'
 type ChResponse<T> = any
 
 // 表格Propsyar
@@ -55,6 +54,7 @@ export default ({
         reload,
         total,
         setQuery,
+        status,
     } = ChUtils.chHooks.usePage({
         url: url,
         pageSize: 10,
@@ -131,19 +131,11 @@ export default ({
         {<ChForm
             submitname="搜索"
             layout={{}}
-            formData={[
-                {
-                    layout: {span: 6},
-                    type: FormItemType.input,
-                    label: '名称',
-                    name: 'name',
-                    rules: [
-                    //   { required: true, message: '请输入名称' }
-                    ],
-                }
-            ]}
+            formData={searchFormData || []}
             onFinish={(values) => {
-                setQuery(Object.assign(query, values))
+                let q = Object.assign((query || {}), values)
+                ChUtils.chFormats.deleteObjectEmptyKey(q)
+                setQuery(q)
             }} />}
         <Button style={{
             marginBottom: '10px'
@@ -152,6 +144,7 @@ export default ({
                 setShowEditModal(true)
         }} type='primary'>添加</Button>
         <Table
+            loading={status == 'loading'}
             rowKey='id'
             dataSource={list}
             columns={_columns}

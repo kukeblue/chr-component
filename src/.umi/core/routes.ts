@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { ApplyPluginsType } from '/Users/huanchen/Project/out/chr-component/node_modules/@umijs/preset-built-in/node_modules/@umijs/runtime';
+import { ApplyPluginsType } from 'E:/project/chr-component/node_modules/@umijs/preset-built-in/node_modules/@umijs/runtime';
 import { plugin } from './plugin';
 
 export function getRoutes() {

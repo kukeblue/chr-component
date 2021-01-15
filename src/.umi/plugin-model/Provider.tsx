@@ -1,13 +1,13 @@
 // @ts-nocheck
 import React from 'react';
-import initialState from '/Users/huanchen/Project/out/chr-component/src/.umi/plugin-initial-state/models/initialState';
+import initialState from 'E:/project/chr-component/src/.umi/plugin-initial-state/models/initialState';
 
 // @ts-ignore
-import Dispatcher from '/Users/huanchen/Project/out/chr-component/node_modules/@umijs/plugin-model/lib/helpers/dispatcher';
+import Dispatcher from 'E:/project/chr-component/node_modules/@umijs/plugin-model/lib/helpers/dispatcher';
 // @ts-ignore
-import Executor from '/Users/huanchen/Project/out/chr-component/node_modules/@umijs/plugin-model/lib/helpers/executor';
+import Executor from 'E:/project/chr-component/node_modules/@umijs/plugin-model/lib/helpers/executor';
 // @ts-ignore
-import { UmiContext } from '/Users/huanchen/Project/out/chr-component/node_modules/@umijs/plugin-model/lib/helpers/constant';
+import { UmiContext } from 'E:/project/chr-component/node_modules/@umijs/plugin-model/lib/helpers/constant';
 
 export const models = { '@@initialState': initialState,  };
 

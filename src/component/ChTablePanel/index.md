@@ -43,6 +43,7 @@ export default () => {
             columns={columns}
             searchFormData={[
                 {
+                    placeholder: '请输入名称',
                     layout: {span: 6},
                     type: FormItemType.input,
                     label: '名称',

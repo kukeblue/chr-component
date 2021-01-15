@@ -202,7 +202,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "src/component/ChTablePanel/index.md",
-          "updatedTime": 1610502651000,
+          "updatedTime": 1610703389000,
           "title": "TablePanel(常规表格组件)",
           "slugs": [
             {

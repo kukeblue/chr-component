@@ -19,6 +19,7 @@ interface TablePanelProps {
     expandable?: {
         expandedRowRender: (item: Item) => React.ReactElement,
     },
+    onEditFormat?: (item: any)=>void,
     onEditBefore?: (item: Item)=>void,
     query?: Object,
 }
@@ -44,6 +45,7 @@ export default ({
     expandable,
     query,
     onEditBefore,
+    onEditFormat,
     }: TablePanelProps) => {
     const {
         list,
@@ -111,8 +113,10 @@ export default ({
                     <Button type='link'>删除</Button>
                 </Popconfirm>
                 <Button onClick={() => {
-                    setEditor(item);
-                    form.setFieldsValue(item)
+                    let  data = JSON.parse(JSON.stringify(item))
+                    setEditor(data);
+                    onEditFormat && onEditFormat(data)
+                    form.setFieldsValue(data)
                     setShowEditModal(true);
                     //   setShowGradeModal(true)
                 }} type='link'>编辑</Button>
@@ -157,6 +161,7 @@ export default ({
             }}
             onCancel={() => setShowEditModal(false)}>
             <ChForm
+                editor={editor}
                 form={form}
                 formData={formData}
                 onFinish={(values) => {

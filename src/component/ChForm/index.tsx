@@ -25,6 +25,7 @@ interface FormItemOptionsType {
 }
 export interface FormDataItem {
    key?: string,
+   itemshow?: (editor?: any, form?: FormInstance<any>)=>boolean
    type: FormItemType,
    label: string,
    name: string,
@@ -33,22 +34,23 @@ export interface FormDataItem {
    initialValue?: any,
    valuePropName?: string,
    getValueFromEvent?: (e: any) => any,
-   uploadUrl?: string,
-   uploadType?: "picture" | "text" | "picture-card" | undefined
+   uploadurl?: string,
+   uploadType?: "picture" | "text" | "picture-card" | undefined,
+   uploadname?: string
 }
 interface ChFormProps {
    formData: FormDataItem[]
    onFinish?: (values: any) => void,
    form?: FormInstance<any>
+   editor?: any
 }
 
 export default ({
    formData,
    onFinish,
-   form
+   form,
+   editor
 }: ChFormProps) => {
-
-
    const layout = {
       labelCol: { span: 24 },
       wrapperCol: { span: 24 },
@@ -75,7 +77,7 @@ export default ({
             </Select>
             break
          case 'upload':
-            dom = <Upload multiple name="file" action={item.uploadUrl ? item.uploadUrl : "/fileUpload"} listType={item.uploadType}>
+            dom = <Upload multiple name={item.uploadname || "file"} action={item.uploadurl ? item.uploadurl : "/fileUpload"} listType={item.uploadType}>
                <Button icon={<UploadOutlined />}>点击文件</Button>
             </Upload>
             break
@@ -117,6 +119,9 @@ export default ({
          {
             formData && formData.map(item => {
                let formItemProps = buildFormItemProps(item);
+               if(item.itemshow && !item.itemshow(editor, form)) {
+                  return 
+               }
                return <Form.Item
                   {...formItemProps}
                >

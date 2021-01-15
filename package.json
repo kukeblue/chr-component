@@ -7,6 +7,7 @@
     "docs:build": "dumi build",
     "build": "father-build",
     "deploy-local": "sh build.sh",
+    "deploy-doc": "sh deploy-doc.sh",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"

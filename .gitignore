@@ -7,6 +7,7 @@
 /yarn.lock
 /package-lock.json
 
+
 # production
 /dist
 
@@ -14,7 +15,8 @@
 .DS_Store
 
 # umi
-/src/.umi
-/src/.umi-production
-/src/.umi-test
+/.umi/.cache/
+/.umi
+/.umi-production
+/.umi-test
 /.env.local

@@ -20,7 +20,7 @@ interface TablePanelProps {
     expandedRowRender: (item: Item) => React.ReactElement;
   };
   onEditFormat?: (item: any) => void;
-  onEditBefore?: (item: Item) => void;
+  onEditBefore?: (item: Item) => void | boolean;
   query?: Object;
 }
 // 表格Item
@@ -68,7 +68,10 @@ export default ({
   const doAddItem = (item: Item) => {
     if (!onEditBefore) {
     } else {
-      onEditBefore(item);
+      const hasError = onEditBefore(item);
+      if (hasError) {
+        return;
+      }
     }
     ChUtils.Ajax.request({ url: urlAdd, data: item }).then(
       (res: ChResponse<Item>) => {
@@ -84,7 +87,10 @@ export default ({
     item.id = editor.id;
     if (!onEditBefore) {
     } else {
-      onEditBefore(item);
+      const hasError = onEditBefore(item);
+      if (hasError) {
+        return;
+      }
     }
     ChUtils.Ajax.request({ url: urlUpdate, data: item }).then(
       (res: ChResponse<Item>) => {

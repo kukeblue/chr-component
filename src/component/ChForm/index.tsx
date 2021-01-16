@@ -76,7 +76,6 @@ export default ({
   submitname,
   showclear,
 }: ChFormProps) => {
-  console.log('showclear', showclear);
   if (!form) {
     [form] = useForm();
   }

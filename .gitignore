@@ -16,8 +16,8 @@
 
 # umi
 /src/.umi
-/.umi/.cache/
-/.umi
-/.umi-production
-/.umi-test
-/.env.local
+/src/.umi/.cache/
+/src/.umi
+/src/.umi-production
+/src/.umi-test
+/src/.env.local

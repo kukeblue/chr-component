@@ -22,6 +22,13 @@ interface TablePanelProps {
   onEditFormat?: (item: any) => void;
   onEditBefore?: (item: Item) => void | boolean;
   query?: Object;
+  actions?:[
+    {
+      type?: "text" | "link" | "ghost" | "default" | "primary" | "dashed" | undefined,
+      text: string,
+      onClick: ()=>void
+    }
+  ]
 }
 // 表格Item
 type Item = any;
@@ -45,6 +52,7 @@ export default ({
   query,
   onEditBefore,
   onEditFormat,
+  actions
 }: TablePanelProps) => {
   const { list, reload, total, setQuery, status } = ChUtils.chHooks.usePage({
     url: url,
@@ -166,6 +174,17 @@ export default ({
       >
         添加
       </Button>
+      {
+       actions && actions.map((item, index)=>{
+          return <Button
+            key={'_' + index}
+            style={{marginLeft: 20}}
+            type={item.type}
+          >
+            {item.text}
+          </Button>
+       })
+      }
       <Table
         loading={status == 'loading'}
         rowKey="id"

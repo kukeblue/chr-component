@@ -130,6 +130,14 @@ export default () => {
             </div>
           ),
         }}
+        actions={[
+          {
+            text: '导入',
+            onClick: ()=>{
+              console.log('点击了导入')
+            }
+          }
+        ]}
       />
     </div>
   );

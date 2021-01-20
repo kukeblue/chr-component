@@ -9,10 +9,12 @@ import {
   Upload,
   Row,
   Col,
+  Cascader
 } from 'antd';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
+import regionOptions from '../../ChUtils/regionOptions'
 import './index.less';
 const { Option } = Select;
 export enum FormItemType {
@@ -21,6 +23,7 @@ export enum FormItemType {
   select = 'select',
   upload = 'upload',
   multipleSelect = 'mutipleSelect',
+  regionSelect = 'region-select'
 }
 interface FormItemRule {
   validator?: (rule: any, value: any, callback: (v: any) => void) => void;
@@ -103,9 +106,9 @@ export default ({
       case 'select':
         dom = (
           <Select placeholder={item.placeholder}>
-            {item.options?.map(item => {
+            {item.options?.map((item, index) => {
               return (
-                <Option key={item.value} value={item.value}>
+                <Option key={index} value={item.value}>
                   {item.label}
                 </Option>
               );
@@ -128,9 +131,9 @@ export default ({
       case 'mutipleSelect':
         dom = (
           <Select placeholder={item.placeholder} mode="multiple">
-            {item.options?.map(item => {
+            {item.options?.map((item, index) => {
               return (
-                <Option key={item.value} value={item.value}>
+                <Option key={'_' + index} value={item.value}>
                   {item.label}
                 </Option>
               );
@@ -138,23 +141,20 @@ export default ({
           </Select>
         );
         break;
+        case 'region-select':
+          dom = (
+            <Cascader options={regionOptions}  placeholder={item.placeholder || '请选择地区'}/>
+          );
+          break;
       default:
         dom = <Input placeholder={item.placeholder} />;
     }
     return dom;
   };
   const buildFormItemProps = (item: FormDataItem) => {
-    item.key = `formData_${item.name}`;
-    // if (item.type == 'upload') {
-    //    item.valuePropName = "fileList";
-    //    item.getValueFromEvent = (e: any) => {
-    //       if (Array.isArray(e)) {
-    //          return e[e.length - 1];
-    //       }
-    //       return e && [e.fileList[e.fileList.length - 1]];
-    //    };
-    // }
-    return item;
+    item.key = item.key || `formData_${item.name}`;
+    const { itemshow, ...ob  } = item
+    return ob;
   };
 
   return (
@@ -166,7 +166,7 @@ export default ({
               let layout = item.layout || { span: 24 };
               let formItemProps = buildFormItemProps(item);
               if (item.itemshow && !item.itemshow(editor, form)) {
-                return <div></div>;
+                return null;
               }
               return (
                 <Col key={formItemProps.key || index} {...layout}>

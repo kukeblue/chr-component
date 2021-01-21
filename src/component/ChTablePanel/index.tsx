@@ -5,7 +5,13 @@ import ChForm from '../ChForm/index';
 import './index.less';
 import { useForm } from 'antd/lib/form/Form';
 import { FormDataItem } from '../ChForm/index';
+import { AxiosError } from 'axios';
 type ChResponse<T> = any;
+// ChUtils.Ajax.RequestConfig.onError = (error: AxiosError)=> {
+//     if(error?.response?.status == 401) {
+//       console.log('登录过期了')
+//     }
+// }
 
 // 表格Propsyar
 interface TablePanelProps {

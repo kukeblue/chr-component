@@ -1,5 +1,5 @@
 import { getObCache, setObCache } from "./cache";
-import axios, {Method} from 'axios'
+import axios, {Method, AxiosError} from 'axios'
 
 export interface ChResponse<T> {
     list?: T[],
@@ -23,11 +23,13 @@ export interface ChCommonResponse {
 
 // 默认配置
 export const RequestConfig:{
-    config: Object,
-    onRequest: Function | undefined
+    config?: Object,
+    onRequest?: Function,
+    onError?: (e: AxiosError) => void
 } = {
     config: {},
-    onRequest: undefined // 请求数据格式化
+    onRequest: undefined, // 请求数据格式化
+    onError: undefined,
 }
 
 export const request = (requestPrams: {
@@ -71,35 +73,16 @@ export const request = (requestPrams: {
         console.log(`【REQUEST SUCCESS】 访问地址:${url}`)
         console.log(`【REQUEST SUCCESS】 请求参数:`,config.data)
         axios(config).then(function (response) {
-            // console.log(response.data);
-            // console.log(response.status);
-            // console.log(response.statusText);
-            // console.log(response.headers);
-            // console.log(response.config);
-            
             console.log(`【REQUEST SUCCESS】 返回结果:`, response.data)
-            
             if(response.data && response.data.status === 0) {
                 setObCache(url, response.data)
             }
             resolve(response.data)
         }).
-        catch(function (error) {
-            console.error('ERROR: 请求异常 ！')
-            if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              console.log(error.response.data);
-              console.log(error.response.status);
-              console.log(error.response.headers);
-            } else if (error.request) {
-              console.error('ERROR: 请求失败 ',error);
-            } else {
-              console.error('ERROR: 请求失败', error);
-            }
+        catch(function (error: AxiosError) {
+            console.error('请求抛锚飞到了外太空～')
+            RequestConfig.onError && RequestConfig.onError(error);
             reject(error)
-        }).finally(()=>{
-            // reject('请求超时!')
         });
     })
     

@@ -41,7 +41,7 @@ export default () => {
         urlDelete="http://localhost:8000/api/grade/delete"
         urlAdd="http://localhost:8000/api/grade/add"
         urlUpdate="http://localhost:8000/api/grade/edit"
-        url="http://api-paper.kukechen.top/api/grade/page"
+        url="http://localhost:8000/api/grade/page"
         columns={columns}
         searchFormData={[
           {

@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  MutableRefObject,
+  forwardRef,
+} from 'react';
 import { Table, Popconfirm, Button, Modal } from 'antd';
 import ChUtils from '../../ChUtils';
 import ChForm from '../ChForm/index';
@@ -7,12 +13,6 @@ import { useForm } from 'antd/lib/form/Form';
 import { FormDataItem } from '../ChForm/index';
 import { AxiosError } from 'axios';
 type ChResponse<T> = any;
-// ChUtils.Ajax.RequestConfig.onError = (error: AxiosError)=> {
-//     if(error?.response?.status == 401) {
-//       console.log('登录过期了')
-//     }
-// }
-
 // 表格Propsyar
 interface TablePanelProps {
   columns: Column[];
@@ -28,13 +28,20 @@ interface TablePanelProps {
   onEditFormat?: (item: any) => void;
   onEditBefore?: (item: Item) => void | boolean;
   query?: Object;
-  actions?:[
+  actions?: [
     {
-      type?: "text" | "link" | "ghost" | "default" | "primary" | "dashed" | undefined,
-      text: string,
-      onClick: ()=>void
-    }
-  ]
+      type?:
+        | 'text'
+        | 'link'
+        | 'ghost'
+        | 'default'
+        | 'primary'
+        | 'dashed'
+        | undefined;
+      text: string;
+      onClick: () => void;
+    },
+  ];
 }
 // 表格Item
 type Item = any;
@@ -46,20 +53,21 @@ type Column = {
   render?: (text: string, ob: any) => JSX.Element;
 };
 
-export default ({
-  columns,
-  url,
-  urlAdd,
-  urlDelete,
-  urlUpdate,
-  formData,
-  searchFormData,
-  expandable,
-  query,
-  onEditBefore,
-  onEditFormat,
-  actions
-}: TablePanelProps) => {
+const chTablePanel = forwardRef((props: TablePanelProps, ref: any) => {
+  const {
+    columns,
+    url,
+    urlAdd,
+    urlDelete,
+    urlUpdate,
+    formData,
+    searchFormData,
+    expandable,
+    query,
+    onEditBefore,
+    onEditFormat,
+    actions,
+  } = props;
   const { list, reload, total, setQuery, status } = ChUtils.chHooks.usePage({
     url: url,
     pageSize: 10,
@@ -69,6 +77,21 @@ export default ({
   const [form] = useForm();
   const [editor, setEditor] = useState<any>();
   const [showEditModal, setShowEditModal] = useState(false);
+
+  useEffect(() => {
+    if (ref) {
+      ref.current = {
+        status,
+        setQuery,
+        total,
+        list,
+        reload,
+        form,
+        editor,
+        showEditModal,
+      };
+    }
+  }, []);
 
   const doDeleteItem = (id: string) => {
     ChUtils.Ajax.request({ url: urlDelete, data: { id } }).then(
@@ -180,17 +203,21 @@ export default ({
       >
         添加
       </Button>
-      {
-       actions && actions.map((item, index)=>{
-          return <Button
-            key={'_' + index}
-            style={{marginLeft: 20}}
-            type={item.type}
-          >
-            {item.text}
-          </Button>
-       })
-      }
+      {actions &&
+        actions.map((item, index) => {
+          return (
+            <Button
+              key={'_' + index}
+              style={{ marginLeft: 20 }}
+              type={item.type}
+              onClick={() => {
+                item.onClick && item.onClick();
+              }}
+            >
+              {item.text}
+            </Button>
+          );
+        })}
       <Table
         loading={status == 'loading'}
         rowKey="id"
@@ -228,4 +255,6 @@ export default ({
       </Modal>
     </div>
   );
-};
+});
+
+export default chTablePanel;

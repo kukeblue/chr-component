@@ -5,7 +5,7 @@ title: TablePanel(常规表格组件)
 ## TablePanel
 
 ```jsx
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import ChTablePanel from './index.tsx';
 import './index.less';
 import { useOptionFormListHook } from '../../ChUtils/chHooks';
@@ -35,9 +35,16 @@ export default () => {
       key: 'term',
     },
   ];
+  const ref = useRef();
+
+  useEffect(() => {
+    console.log('ref', ref);
+  }, []);
+
   return (
     <div className="chTablePanel">
       <ChTablePanel
+        ref={ref}
         urlDelete="http://localhost:8000/api/grade/delete"
         urlAdd="http://localhost:8000/api/grade/add"
         urlUpdate="http://localhost:8000/api/grade/edit"
@@ -133,10 +140,10 @@ export default () => {
         actions={[
           {
             text: '导入',
-            onClick: ()=>{
-              console.log('点击了导入')
-            }
-          }
+            onClick: () => {
+              console.log('点击了导入');
+            },
+          },
         ]}
       />
     </div>

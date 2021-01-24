@@ -67,7 +67,8 @@ export function usePage(props: usePageProps) {
 
 interface useOptionFormListHookProps {
   url: string,
-  query?: Object
+  query?: Object,
+  expiresTime?: number,
 }
 
 interface Options {
@@ -90,7 +91,7 @@ export function useOptionFormListHook(props: useOptionFormListHookProps) {
     }else {
       Ajax.request({ url, data: { query } }).then((res: any) => {
         if (res.status == 0 && res.list) {
-          setObCache(cacheKey, res, 60)
+          setObCache(cacheKey, res, props.expiresTime || 0)
           refresh(res)       
         }
       })

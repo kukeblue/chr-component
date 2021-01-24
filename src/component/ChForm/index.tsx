@@ -52,6 +52,7 @@ export interface FormDataItem {
   uploadurl?: string;
   uploadType?: 'picture' | 'text' | 'picture-card' | undefined;
   uploadname?: string;
+  uploadheader?: any;
   layout?: {
     span?: number;
     offset?: number;
@@ -119,6 +120,10 @@ export default ({
       case 'upload':
         dom = (
           <Upload
+            headers={
+              item.uploadheader
+              // { Auth: getObCache('user') && getObCache('user').token}
+            }
             multiple
             name={item.uploadname || 'file'}
             action={item.uploadurl ? item.uploadurl : '/fileUpload'}

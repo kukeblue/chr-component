@@ -5,7 +5,7 @@ import React, {
   MutableRefObject,
   forwardRef,
 } from 'react';
-import { Table, Popconfirm, Button, Modal } from 'antd';
+import { Table, Popconfirm, Button, Modal, Pagination } from 'antd';
 import ChUtils from '../../ChUtils';
 import ChForm from '../ChForm/index';
 import './index.less';
@@ -224,15 +224,17 @@ const chTablePanel = forwardRef((props: TablePanelProps, ref: any) => {
         dataSource={list}
         columns={_columns}
         expandable={expandable}
-        pagination={{
-          total: total,
-          defaultCurrent: 1,
-          pageSize: 10,
-          onChange: (page, pageSize) => {
-            reload(page);
-          },
-        }}
+        pagination={false}
+        // pagination={{
+        //   total: total,
+        //   defaultCurrent: 1,
+        //   pageSize: 10,
+          
+        // }}
       />
+      <div style={{
+        marginTop: 20,
+      }}><Pagination defaultCurrent={1} total={total} pageSize={10} onChange={(page, pageSize) => {reload(page)}}/></div>
       <Modal
         title={editor && editor.id ? '编辑' : '新增'}
         destroyOnClose
